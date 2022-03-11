@@ -31,16 +31,91 @@
   tsc --watch
   ```
 
-- Desplegar el servidor (2 opciones en producción, 1 opción en desarrollo)
+- Desplegar el servidor en modo desarrollo (2 opciones)
   
   ```txt
   npm run dev
   ```
   
   ```txt
-  node dist/index.ts
+  nodemon dist/index.js
   ```
+
+- Desplegar el servidor en modo producción (2 opciones)
   
   ```txt
-  nodemon dist/index.ts
+  npm run prod
   ```
+
+  ```txt
+  node dist/index.js
+  ```
+
+## Instalación de Paquetes necesarios
+
+```txt
+npm i express colors cors morgan dotenv
+```
+
+## Instalación de tipado de paquetes en modo desarrollo
+
+```txt
+npm i @types/express --save-dev
+```
+
+```txt
+npm i @types/cors --save-dev
+```
+
+```txt
+npm i @types/morgan --save-dev
+```
+
+## Instalación de Nodemon en modo desarrollo
+
+```txt
+npm i nodemon --save-dev
+```
+
+## Instalación y configuración de TS
+
+- Instalación de TS de manera global
+  
+  ```txt
+  npm i -g typescript
+  ```
+
+- Inicialización de TS en el proyecto
+  
+  ```txt
+  tsc --init
+  ```
+
+- Configuración del archivo `tsconfig.json`
+  
+  ```json
+  {
+      "compilerOptions": {
+          ...,
+          "outDir": "./dist",
+          ...
+      }
+  }
+  ```
+
+## Establecimiento de scripts del proyecto
+
+Dentro del archivo `package.json` tenemos la siguiente configuración, asociada con los comandos presentados en la primera parte de este archivo:
+
+```json
+{
+    ...,
+    "scripts": {
+        ...,
+        "build": "tsc --watch",
+        "dev": "nodemon dist/index.js",
+        "prod": "node dist/index.js"
+    },
+    ...
+}
+```

@@ -1,0 +1,28 @@
+{
+    "name": "backend-node",
+    "version": "1.0.0",
+    "description": "- García Sisa Jairo Eduardo.\r - Gil Estupiñan Sergio Alejandro.\r - Mesa Buitrago Sergio David.\r - Páez Ferreira Carlos David.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "tsc --watch",
+        "dev": "nodemon dist/index.js",
+        "prod": "node dist/index.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "colors": "^1.4.0",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.0",
+        "express": "^4.17.3",
+        "morgan": "^1.10.0"
+    },
+    "devDependencies": {
+        "@types/cors": "^2.8.12",
+        "@types/express": "^4.17.13",
+        "@types/morgan": "^1.9.3",
+        "nodemon": "^2.0.15"
+    }
+}

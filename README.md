@@ -54,7 +54,7 @@
 ## Instalación de Paquetes necesarios
 
 ```txt
-npm i express colors cors morgan dotenv
+npm i express colors cors morgan dotenv pg-promise
 ```
 
 ## Instalación de tipado de paquetes en modo desarrollo
@@ -69,6 +69,10 @@ npm i @types/cors --save-dev
 
 ```txt
 npm i @types/morgan --save-dev
+```
+
+```txt
+npm install @types/pg-promise --save-dev
 ```
 
 ## Instalación de Nodemon en modo desarrollo

@@ -1,0 +1,1 @@
+export { userControllerGet } from "./user-get.controller";

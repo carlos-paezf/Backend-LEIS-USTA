@@ -6,13 +6,14 @@ const connectionDB = new ConnectionDB()
 
 
 /**
- * The app function is an async function that awaits the connectionDB.connectPool function and then
- * awaits the server.start function.
+ * The app function is an async function that awaits the connection to the database and the server to
+ * start.
  * 
  * @author Carlos Páez
  */
 const app = async () => {
-    await connectionDB.connectPool()
+    // await connectionDB.connectionPgPromise()
+    await connectionDB.connectionSequelize()
     await server.start()
 }
 

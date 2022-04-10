@@ -54,7 +54,18 @@
 ## Instalación de Paquetes necesarios
 
 ```txt
+npm i express colors cors morgan dotenv
+```
+<!-- ```txt
 npm i express colors cors morgan dotenv pg-promise
+``` -->
+
+```txt
+npm i --save sequelize
+```
+
+```txt
+npm install --save pg pg-hstore
 ```
 
 ## Instalación de tipado de paquetes en modo desarrollo
@@ -123,3 +134,7 @@ Dentro del archivo `package.json` tenemos la siguiente configuración, asociada 
     ...
 }
 ```
+
+## Documentación de un API Client
+
+A continuación se presenta la documentación de los endpoints de nuestro Backend: [Documentación Backend LEIS](https://documenter.getpostman.com/view/8438809/UVyysCDd 'Endpoints Backend')

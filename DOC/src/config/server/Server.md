@@ -10,6 +10,7 @@ import express, { Application, json, urlencoded } from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
 import { green } from 'colors'
+import userRoutes from '../../routes/user.routes';
 
 export class Server {
     private _app: Application
@@ -19,7 +20,9 @@ export class Server {
         dev: process.env.DEV_HOST,
         prod: process.env.PROD_HOST
     }
-    private _paths = {}
+    private _paths = {
+        users: '/api/private/users'
+    }
 
     constructor() {
         this._app = express()
@@ -40,11 +43,13 @@ export class Server {
         this._app.use(urlencoded({ extended: true }))
     }
 
-    public routes(): void { ... }
+    public routes(): void {
+        this._app.use(this._paths.users, userRoutes)
+    }
 
     public async start(): Promise<any> {
         this._app.listen(this._port, () => {
-            console.log(green(`Server running in:`))
+            console.log(green(`> Server running in:`))
             console.log(green(`     - Local mode: ${this._host.local}:${this._port}`))
             console.log(green(`     - Development mode: ${this._host.dev}:${this._port}`))
             console.log(green(`     - Production mode: ${this._host.prod}:${this._port}`))

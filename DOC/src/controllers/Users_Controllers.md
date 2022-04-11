@@ -31,3 +31,20 @@ class UserController_GET extends UsersDAO_GET {
 
 export const userControllerGet = new UserController_GET()
 ```
+
+## Post Controller
+
+En la clase controladora de las acciones POST tenemos el método para añadir un usuario a la base de datos. Es importante tener en cuenta que antes de entrar en el controlador, la petición al servidor entra en el archivo de las rutas, en donde se aplican middlewares y/o handlers para poder tomar el request y analizarlo. Luego entramos al controlador y allí es donde tomamos los valores del body o params y lo entregamos al DAO.
+
+```ts
+import { Request, Response } from "express";
+import { UserDAO_POST } from "../../daos/users";
+
+class UserController_POST extends UserDAO_POST {
+    public createUser = (req: Request, res: Response): void => {
+        UserDAO_POST.createUser({ ...req.body }, res)
+    }
+}
+
+export const userControllerPost = new UserController_POST()
+```

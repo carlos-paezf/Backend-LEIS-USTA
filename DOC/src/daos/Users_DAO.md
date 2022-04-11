@@ -56,3 +56,29 @@ export class UsersDAO_GET {
     }
 }
 ```
+
+## POST DAO
+
+En la clase DAO para el método POST, tenemos la función para crear un usuario luego de tomar los parámetros entregados por el controlador, y una vez creado el usuario, lo retornamos al usuario mediante el response.
+
+```ts
+import { red } from "colors";
+import { Response } from "express";
+import { User } from "../../models";
+
+
+export class UserDAO_POST {
+    protected static createUser = async (params: any, res: Response) => {
+        try {
+            const user = await User.create({ ...params, status: 1 })
+            return res.status(201).json({ ok: true, user })
+        } catch (error) {
+            console.log(red('Error in UserDAO_POST: '), error)
+            return res.status(500).json({
+                ok: false,
+                msg: 'Comuníquese con el administrador'
+            })
+        }
+    }
+}
+```

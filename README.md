@@ -54,7 +54,7 @@
 ## Instalación de Paquetes necesarios
 
 ```txt
-npm i express colors cors morgan dotenv
+npm i express express-validator colors cors morgan dotenv
 ```
 <!-- ```txt
 npm i express colors cors morgan dotenv pg-promise

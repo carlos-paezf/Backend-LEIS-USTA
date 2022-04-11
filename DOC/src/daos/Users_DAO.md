@@ -82,3 +82,117 @@ export class UserDAO_POST {
     }
 }
 ```
+
+## PUT DAO
+
+Los métodos para actualizar la información del usuario consisten en recibir el documento o la data de la persona a actualizar, luego se confirma que el usuario existe en la base de datos y que cumpla con cierta condición en su estado. Si pasa las validaciones, se actualiza la información.
+
+```ts
+import { red } from "colors";
+import { Response } from "express";
+import { User } from "../../models";
+
+
+export class UserDAO_PUT {
+    protected static updateUserByDocument = async (params: any, res: Response): Promise<any> => {
+        try {
+            const { document, ...rest } = params
+            const user = await User.findByPk(document)
+
+            if (!user) return res.status(400).json({
+                ok: false,
+                msg: `No existe un usuario con el documento ${document}`
+            })
+            if (!user.status) return res.status(400).json({
+                ok: false,
+                msg: `El usuario con el documento ${document} se encuentra inhabilitado`
+            })
+
+            await user.update({ ...rest })
+            return res.status(200).json({
+                ok: true,
+                msg: `El usuario con el documento ${document}, ha sido actualizado correctamente`,
+                user
+            })
+        } catch (error) {
+            console.log(red('Error in UserDAO_PUT: '), error)
+            return res.status(500).json({
+                ok: false,
+                msg: 'Comuníquese con el Administrador'
+            })
+        }
+    }
+
+
+    protected static enableUserByDocument = async (params: any, res: Response): Promise<any> => {
+        try {
+            const { document } = params
+            const user = await User.findByPk(document)
+
+            if (!user) return res.status(400).json({
+                ok: false,
+                msg: `No existe un usuario con el documento ${document}`
+            })
+            if (user.status) return res.status(400).json({
+                ok: false,
+                msg: `El usuario con el documento ${document} ya se encuentra habilitado`
+            })
+
+            await user.update({ status: 1 })
+            return res.status(200).json({
+                ok: true,
+                msg: `El usuario con el documento ${document}, ha sido habilitado correctamente`,
+                user
+            })
+        } catch (error) {
+            console.log(red('Error in UserDAO_PUT: '), error)
+            return res.status(500).json({
+                ok: false,
+                msg: 'Comuníquese con el administrador'
+            })
+        }
+    }
+}
+```
+
+## DELETE DAO
+
+Se necesita el documento del usuario para poder inhabilitarlo, puesto que se requiere verificar su existencia en la base de datos junto a su estado. Si todo va bien, se actualiza el usuario.
+
+```ts
+import { Response } from "express"
+import { User } from "../../models"
+import { red } from 'colors';
+
+
+export class UserDAO_DELETE {
+    protected static disableUserByDocument = async (params: any, res: Response): Promise<any> => {
+        try {
+            const { document } = params
+            const user = await User.findByPk(document)
+
+            if (!user) return res.status(400).json({
+                ok: false,
+                msg: `No existe un usuario con el documento ${document}`
+            })
+            if (!user.status) return res.status(400).json({
+                ok: false,
+                msg: `El usuario con el documento ${document} se encuentra inhabilitado`
+            })
+
+            await user.update({ status: 0 })
+            return res.status(200).json({
+                ok: true,
+                msg: `El usuario con el documento ${document}, ha sido inhabilitado correctamente`,
+                user
+            })
+        } catch (error) {
+            console.log(red('Error in UserDAO_PUT: '), error)
+            return res.status(500).json({
+                ok: false,
+                msg: 'Comuníquese con el administrador'
+            })
+        }
+    }
+}
+```

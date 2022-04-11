@@ -48,3 +48,49 @@ class UserController_POST extends UserDAO_POST {
 
 export const userControllerPost = new UserController_POST()
 ```
+
+## Put Controller
+
+En esta clase tenemos los métodos para actualizar la información de un usuario o para inhabilitar su estado. En ambos método es importante el documento del usuario.
+
+```ts
+import { Request, Response } from "express";
+import { UserDAO_PUT } from "../../daos/users";
+
+
+class UserController_PUT extends UserDAO_PUT {
+    public updateUserByDocument = (req: Request, res: Response): void => {
+        const { document } = req.params
+        const { first_name, last_name, email } = req.body
+        UserDAO_PUT.updateUserByDocument({ document, first_name, last_name, email }, res)
+    }
+    
+    public enableUserByDocument = (req: Request, res: Response): void => {
+        const { document } = req.params
+        UserDAO_PUT.enableUserByDocument({ document }, res)
+    }
+}
+
+
+export const userControllerPut = new UserController_PUT()
+```
+
+## Delete Controller
+
+En este controlador tenemos los método para inhabilitar o eliminar un usuario.
+
+```ts
+import { Request, Response } from "express";
+import { UserDAO_DELETE } from "../../daos/users";
+
+
+class UserController_DELETE extends UserDAO_DELETE {
+    public disableUserByDocument = (req: Request, res: Response): void => {
+        const { document } = req.params
+        UserDAO_DELETE.disableUserByDocument({ document }, res)
+    }
+}
+
+
+export const userControllerDelete = new UserController_DELETE()
+```

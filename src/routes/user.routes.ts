@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { check } from "express-validator";
-import { userControllerGet, userControllerPost } from "../controllers/users";
+import { userControllerDelete, userControllerGet, userControllerPost, userControllerPut } from "../controllers/users";
 import { documentAlreadyUsed, emailAlreadyUsed } from "../helpers";
 import { validateFieldsErrors } from '../middlewares/validate-fields.middleware';
 
@@ -29,6 +29,7 @@ class UserRoutes {
     public config = () => {
         this.userRoutes.get('/', userControllerGet.getAllUsers)
         this.userRoutes.get('/:document', userControllerGet.getUserByDocument)
+
         this.userRoutes.post('/create', [
             check('document', 'El documento es obligatorio').not().isEmpty(),
             check('first_name', 'El nombre es obligatorio').not().isEmpty(),
@@ -39,6 +40,16 @@ class UserRoutes {
             check('email').custom(emailAlreadyUsed),
             validateFieldsErrors
         ], userControllerPost.createUser)
+
+        this.userRoutes.put('/update/:document', [
+            check(['first_name', 'last_name', 'email'], 'No se pueden enviar campos vacíos').not().isEmpty(),
+            check('email', 'Debe ingresar un correo valido').isEmail(),
+            check('email').custom(emailAlreadyUsed),
+            validateFieldsErrors
+        ], userControllerPut.updateUserByDocument)
+
+        this.userRoutes.put('/enable/:document', userControllerPut.enableUserByDocument)
+        this.userRoutes.delete('/disable/:document', userControllerDelete.disableUserByDocument)
     }
 }
 

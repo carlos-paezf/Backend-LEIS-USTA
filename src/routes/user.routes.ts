@@ -1,5 +1,8 @@
 import { Router } from "express";
-import { userControllerGet } from "../controllers/users";
+import { check } from "express-validator";
+import { userControllerGet, userControllerPost } from "../controllers/users";
+import { documentAlreadyUsed, emailAlreadyUsed } from "../helpers";
+import { validateFieldsErrors } from '../middlewares/validate-fields.middleware';
 
 
 /**
@@ -26,6 +29,16 @@ class UserRoutes {
     public config = () => {
         this.userRoutes.get('/', userControllerGet.getAllUsers)
         this.userRoutes.get('/:document', userControllerGet.getUserByDocument)
+        this.userRoutes.post('/create', [
+            check('document', 'El documento es obligatorio').not().isEmpty(),
+            check('first_name', 'El nombre es obligatorio').not().isEmpty(),
+            check('last_name', 'El apellido es obligatorio').not().isEmpty(),
+            check('email', 'El correo es obligatorio').not().isEmpty(),
+            check('email', 'Debe ingresar un correo valido').isEmail(),
+            check('document').custom(documentAlreadyUsed),
+            check('email').custom(emailAlreadyUsed),
+            validateFieldsErrors
+        ], userControllerPost.createUser)
     }
 }
 

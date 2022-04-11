@@ -21,7 +21,8 @@ User.init(
         document: {
             primaryKey: true,
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         first_name: {
             type: DataTypes.STRING,
@@ -34,6 +35,7 @@ User.init(
         email: {
             type: DataTypes.STRING,
             allowNull: false,
+            unique: true
         },
         status: {
             type: DataTypes.NUMBER,

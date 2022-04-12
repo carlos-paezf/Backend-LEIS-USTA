@@ -1,18 +1,29 @@
 import { Model, DataTypes } from 'sequelize';
-import { ConnectionDB } from '../config/database/connection-db.config';
+import { ConnectionDB } from '../config';
+
 
 /**
  * The User class extends the Model class and has the following properties: 
- * document, first_name, last_name, email and status.
+ * document, role_id, status_id, type_document, first_name, last_name, 
+ * username, email, contact_number, password, enabled, 
+ * created_at,updated_at
  * 
  * @author Carlos Páez
  */
 export class User extends Model {
     document!: String
+    role_id!: Number
+    status_id!: Number
+    type_document!: String
     first_name!: String
     last_name!: String
+    username!: String
     email!: String
-    status!: Boolean
+    contact_number!: String
+    password!: String
+    enabled!: Boolean
+    created_at!: Date
+    updated_at!: Date
 }
 
 /* Defining the model and the table name. */
@@ -24,6 +35,18 @@ User.init(
             allowNull: false,
             unique: true
         },
+        role_id: {
+            type: DataTypes.DOUBLE,
+            allowNull: false,
+        },
+        status_id: {
+            type: DataTypes.DOUBLE,
+            allowNull: false,
+        },
+        type_document: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
         first_name: {
             type: DataTypes.STRING,
             allowNull: false
@@ -32,13 +55,34 @@ User.init(
             type: DataTypes.STRING,
             allowNull: false
         },
+        username: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true
+        },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true
         },
-        status: {
-            type: DataTypes.NUMBER,
+        contact_number: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        password: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        enabled: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false
+        },
+        created_at: {
+            type: DataTypes.DATE,
+            allowNull: false
+        },
+        updated_at: {
+            type: DataTypes.DATE,
             allowNull: false
         }
     },

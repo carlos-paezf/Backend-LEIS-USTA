@@ -1,4 +1,4 @@
-import { User } from "../models"
+import { Role, Status, User } from "../models"
 
 
 /**
@@ -27,4 +27,28 @@ export const documentAlreadyUsed = async (document: string): Promise<void> => {
 export const emailAlreadyUsed = async (email: string): Promise<void> => {
     const emailExists = await User.findOne({ where: { email } })
     if (emailExists) throw new Error(`Ya existe un usuario con el correo ${email}`)
+}
+
+
+/**
+ * 
+ * @param roleId 
+ * 
+ * @author Carlos Páez
+ */
+export const roleExists = async (roleId: any): Promise<any> => {
+    const roleExists = await Role.findByPk(roleId)
+    if (!roleExists) throw new Error(`No existe un rol con el id ${roleId}`)
+}
+
+
+/**
+ * 
+ * @param statusId 
+ * 
+ * @author Carlos Páez
+ */
+export const statusExists = async (statusId: any): Promise<any> => {
+    const statusExists = await Status.findByPk(statusId)
+    if (!statusExists) throw new Error(`No existe un estatus con el id ${statusId}`)
 }

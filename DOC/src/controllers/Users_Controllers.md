@@ -89,6 +89,11 @@ class UserController_DELETE extends UserDAO_DELETE {
         const { document } = req.params
         UserDAO_DELETE.disableUserByDocument({ document }, res)
     }
+
+    public permanentlyDeleteUserByDocument = (req: Request, res: Response): void => {
+        const { document } = req.params
+        UserDAO_DELETE.permanentlyDeleteUserByDocument({ document }, res)
+    }
 }
 
 

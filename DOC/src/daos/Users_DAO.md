@@ -187,7 +187,31 @@ export class UserDAO_DELETE {
                 user
             })
         } catch (error) {
-            console.log(red('Error in UserDAO_PUT: '), error)
+            console.log(red('Error in UserDAO_DELETE: '), error)
+            return res.status(500).json({
+                ok: false,
+                msg: 'Comuníquese con el administrador'
+            })
+        }
+    }
+
+    protected static totalDeleteUserByDocument = async (params: any, res: Response): Promise<any> => {
+        try {
+            const { document } = params
+
+            const user = await User.findByPk(document)
+            if (!user) return res.status(400).json({
+                ok: false,
+                msg: `No existe un usuario con el documento ${document}`
+            })
+
+            await user.destroy()
+            return res.status(200).json({
+                ok: true,
+                msg: `El usuario con el documento ${document}, ha sido eliminado correctamente de la base de datos`
+            })
+        } catch (error) {
+            console.log(red('Error in UserDAO_DELETE: '), error)
             return res.status(500).json({
                 ok: false,
                 msg: 'Comuníquese con el administrador'

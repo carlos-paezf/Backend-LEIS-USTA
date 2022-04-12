@@ -13,12 +13,12 @@ class UserController_GET extends UsersDAO_GET {
      * @param {Response} res - Response; this is the response object from express
      */
     public getAllUsers = (req: Request, res: Response): void => {
-        const { from = 0, limit = 10, actives = false } = req.query
+        const { from = 0, limit = 10, all = false } = req.query
         UsersDAO_GET.getAllUsers(
             {
                 from: Number(from),
                 limit: Number(limit),
-                actives: Boolean(actives)
+                all: Boolean(all)
             }, res)
     }
 

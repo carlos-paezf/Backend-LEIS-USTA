@@ -25,7 +25,7 @@ export class UserDAO_PUT {
                 ok: false,
                 msg: `No existe un usuario con el documento ${document}`
             })
-            if (!user.status) return res.status(400).json({
+            if (!user.enabled) return res.status(400).json({
                 ok: false,
                 msg: `El usuario con el documento ${document} se encuentra inhabilitado`
             })
@@ -62,12 +62,12 @@ export class UserDAO_PUT {
                 ok: false,
                 msg: `No existe un usuario con el documento ${document}`
             })
-            if (user.status) return res.status(400).json({
+            if (user.enabled) return res.status(400).json({
                 ok: false,
                 msg: `El usuario con el documento ${document} ya se encuentra habilitado`
             })
 
-            await user.update({ status: 1 })
+            await user.update({ enabled: 1 })
             return res.status(200).json({
                 ok: true,
                 msg: `El usuario con el documento ${document}, ha sido habilitado correctamente`,

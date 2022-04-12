@@ -1,1 +1,1 @@
-export { documentAlreadyUsed, emailAlreadyUsed } from "./db-validators.helper";
+export { documentAlreadyUsed, emailAlreadyUsed, roleExists, statusExists } from "./db-validators.helper";

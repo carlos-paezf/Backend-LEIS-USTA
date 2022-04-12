@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { check } from "express-validator";
 import { userControllerDelete, userControllerGet, userControllerPost, userControllerPut } from "../controllers/users";
-import { documentAlreadyUsed, emailAlreadyUsed } from "../helpers";
+import { documentAlreadyUsed, emailAlreadyUsed, roleExists, statusExists } from "../helpers";
 import { validateFieldsErrors } from '../middlewares/validate-fields.middleware';
 
 
@@ -27,14 +27,15 @@ class UserRoutes {
      * A function that is called when the class is instantiated. 
      */
     public config = () => {
-        this.userRoutes.get('/', userControllerGet.getAllUsers)
+        this.userRoutes.get('', userControllerGet.getAllUsers)
         this.userRoutes.get('/:document', userControllerGet.getUserByDocument)
 
         this.userRoutes.post('/create', [
-            check('document', 'El documento es obligatorio').not().isEmpty(),
-            check('first_name', 'El nombre es obligatorio').not().isEmpty(),
-            check('last_name', 'El apellido es obligatorio').not().isEmpty(),
-            check('email', 'El correo es obligatorio').not().isEmpty(),
+            check([
+                'document', 'type_document',
+                'first_name', 'last_name', 'username',
+                'email', 'contact_number', 'password'
+            ], 'No se pueden enviar campos vacíos').not().isEmpty(),
             check('email', 'Debe ingresar un correo valido').isEmail(),
             check('document').custom(documentAlreadyUsed),
             check('email').custom(emailAlreadyUsed),
@@ -42,14 +43,22 @@ class UserRoutes {
         ], userControllerPost.createUser)
 
         this.userRoutes.put('/update/:document', [
-            check(['first_name', 'last_name', 'email'], 'No se pueden enviar campos vacíos').not().isEmpty(),
+            check([
+                'role_id', "status_id", 'type_document',
+                'first_name', 'last_name', 'username', 
+                'email', 'contact_number', 'password',
+            ], 'No se pueden enviar campos vacíos').not().isEmpty(),
             check('email', 'Debe ingresar un correo valido').isEmail(),
+            check('role_id').custom(roleExists),
+            check('status_id').custom(statusExists),
             check('email').custom(emailAlreadyUsed),
             validateFieldsErrors
         ], userControllerPut.updateUserByDocument)
 
         this.userRoutes.put('/enable/:document', userControllerPut.enableUserByDocument)
         this.userRoutes.delete('/disable/:document', userControllerDelete.disableUserByDocument)
+
+        this.userRoutes.delete('/remove/:document', userControllerDelete.permanentlyDeleteUserByDocument)
     }
 }
 

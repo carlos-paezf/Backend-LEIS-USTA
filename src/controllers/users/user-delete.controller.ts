@@ -18,6 +18,19 @@ class UserController_DELETE extends UserDAO_DELETE {
         const { document } = req.params
         UserDAO_DELETE.disableUserByDocument({ document }, res)
     }
+
+
+    /**
+     * The document of the user to be remove is taken from the parameters and 
+     * delivered to the inherited method. 
+     * 
+     * @param {Request} req - Request
+     * @param {Response} res - Response
+     */
+    public permanentlyDeleteUserByDocument = (req: Request, res: Response): void => {
+        const { document } = req.params
+        UserDAO_DELETE.permanentlyDeleteUserByDocument({ document }, res)
+    }
 }
 
 

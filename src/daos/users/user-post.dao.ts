@@ -17,7 +17,14 @@ export class UserDAO_POST {
      */
     protected static createUser = async (params: any, res: Response) => {
         try {
-            const user = await User.create({ ...params, status: 1 })
+            const user = await User.create({
+                ...params,
+                role_id: 3,
+                status_id: 1,
+                enabled: 1,
+                created_at: new Date(),
+                updated_at: new Date()
+            })
             return res.status(201).json({ ok: true, user })
         } catch (error) {
             console.log(red('Error in UserDAO_POST: '), error)

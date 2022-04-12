@@ -1,6 +1,7 @@
 import { red } from "colors";
 import { Response } from "express";
-import { User } from "../../models";
+import { Role, Status, User } from "../../models";
+import { genSaltSync, hashSync } from 'bcryptjs';
 
 
 /**
@@ -18,19 +19,33 @@ export class UserDAO_PUT {
      */
     protected static updateUserByDocument = async (params: any, res: Response): Promise<any> => {
         try {
-            const { document, ...rest } = params
-            const user = await User.findByPk(document)
+            const { document, password, ...rest } = params
+            const user = await User.findByPk(document, {
+                attributes: ['document'],
+                include: [
+                    {
+                        model: Role,
+                        attributes: ['name', 'description']
+                    },
+                    {
+                        model: Status,
+                        attributes: ['name', 'description']
+                    }
+                ]
+            })
 
             if (!user) return res.status(400).json({
                 ok: false,
                 msg: `No existe un usuario con el documento ${document}`
             })
-            if (!user.enabled) return res.status(400).json({
+            if (user.enabled === false) return res.status(400).json({
                 ok: false,
                 msg: `El usuario con el documento ${document} se encuentra inhabilitado`
             })
 
-            await user.update({ ...rest })
+            const salt = genSaltSync()
+            await user.update({ ...rest, 'password': hashSync(password, salt), 'updated_at': new Date() })
+
             return res.status(200).json({
                 ok: true,
                 msg: `El usuario con el documento ${document}, ha sido actualizado correctamente`,
@@ -56,7 +71,9 @@ export class UserDAO_PUT {
     protected static enableUserByDocument = async (params: any, res: Response): Promise<any> => {
         try {
             const { document } = params
-            const user = await User.findByPk(document)
+            const user = await User.findByPk(document, {
+                attributes: ['document', 'username', 'email', 'enabled']
+            })
 
             if (!user) return res.status(400).json({
                 ok: false,
@@ -67,7 +84,7 @@ export class UserDAO_PUT {
                 msg: `El usuario con el documento ${document} ya se encuentra habilitado`
             })
 
-            await user.update({ enabled: 1 })
+            await user.update({ enabled: 1, 'updated_at': new Date() })
             return res.status(200).json({
                 ok: true,
                 msg: `El usuario con el documento ${document}, ha sido habilitado correctamente`,

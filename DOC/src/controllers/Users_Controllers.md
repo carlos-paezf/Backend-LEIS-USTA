@@ -57,14 +57,12 @@ En esta clase tenemos los métodos para actualizar la información de un usuario
 import { Request, Response } from "express";
 import { UserDAO_PUT } from "../../daos/users";
 
-
 class UserController_PUT extends UserDAO_PUT {
-    public updateUserByDocument = (req: Request, res: Response): void => {
+    public updateUserByDocument = (req: Request, res: Response) => {
         const { document } = req.params
-        const { first_name, last_name, email } = req.body
-        UserDAO_PUT.updateUserByDocument({ document, first_name, last_name, email }, res)
+        UserDAO_PUT.updateUserByDocument({ document, ...req.body }, res)
     }
-    
+
     public enableUserByDocument = (req: Request, res: Response): void => {
         const { document } = req.params
         UserDAO_PUT.enableUserByDocument({ document }, res)

@@ -1,6 +1,7 @@
 import { red } from "colors";
 import { Response } from "express";
 import { User } from "../../models";
+import { genSaltSync, hashSync } from 'bcryptjs'
 
 
 /**
@@ -17,14 +18,26 @@ export class UserDAO_POST {
      */
     protected static createUser = async (params: any, res: Response) => {
         try {
+            const { password, ...rest } = params
+
+            const salt = genSaltSync()
+            
             const user = await User.create({
-                ...params,
+                ...rest,
+                'password': hashSync(password, salt),
                 role_id: 3,
                 status_id: 1,
                 enabled: 1,
                 created_at: new Date(),
                 updated_at: new Date()
+            }, {
+                returning: [
+                    'document', 'type_document', 
+                    'first_name', 'last_name', 'username',
+                    'email', 'contact_number'
+                ]
             })
+
             return res.status(201).json({ ok: true, user })
         } catch (error) {
             console.log(red('Error in UserDAO_POST: '), error)

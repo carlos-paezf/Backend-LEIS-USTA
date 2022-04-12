@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { check } from "express-validator";
 import { userControllerDelete, userControllerGet, userControllerPost, userControllerPut } from "../controllers/users";
-import { documentAlreadyUsed, emailAlreadyUsed, roleExists, statusExists } from "../helpers";
+import { documentAlreadyUsed, emailAlreadyUsed, roleExists, statusExists, usernameAlreadyUsed } from "../helpers";
 import { validateFieldsErrors } from '../middlewares/validate-fields.middleware';
 
 
@@ -38,6 +38,7 @@ class UserRoutes {
             ], 'No se pueden enviar campos vacíos').not().isEmpty(),
             check('email', 'Debe ingresar un correo valido').isEmail(),
             check('document').custom(documentAlreadyUsed),
+            check('username').custom(usernameAlreadyUsed),
             check('email').custom(emailAlreadyUsed),
             validateFieldsErrors
         ], userControllerPost.createUser)
@@ -47,17 +48,18 @@ class UserRoutes {
                 'role_id', "status_id", 'type_document',
                 'first_name', 'last_name', 'username', 
                 'email', 'contact_number', 'password',
-            ], 'No se pueden enviar campos vacíos').not().isEmpty(),
-            check('email', 'Debe ingresar un correo valido').isEmail(),
-            check('role_id').custom(roleExists),
-            check('status_id').custom(statusExists),
-            check('email').custom(emailAlreadyUsed),
+            ], 'No se pueden enviar campos vacíos').optional().not().isEmpty(),
+            check('email', 'Debe ingresar un correo valido').optional().isEmail(),
+            check('username').optional().custom(usernameAlreadyUsed),
+            check('email').optional().custom(emailAlreadyUsed),
+            check('role_id').optional().custom(roleExists),
+            check('status_id').optional().custom(statusExists),
             validateFieldsErrors
         ], userControllerPut.updateUserByDocument)
 
         this.userRoutes.put('/enable/:document', userControllerPut.enableUserByDocument)
+        
         this.userRoutes.delete('/disable/:document', userControllerDelete.disableUserByDocument)
-
         this.userRoutes.delete('/remove/:document', userControllerDelete.permanentlyDeleteUserByDocument)
     }
 }

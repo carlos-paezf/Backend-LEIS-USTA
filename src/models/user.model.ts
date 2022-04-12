@@ -1,12 +1,14 @@
 import { Model, DataTypes } from 'sequelize';
 import { ConnectionDB } from '../config';
+import { Role } from './roles.model';
+import { Status } from './status.model';
 
 
 /**
  * The User class extends the Model class and has the following properties: 
- * document, role_id, status_id, type_document, first_name, last_name, 
- * username, email, contact_number, password, enabled, 
- * created_at,updated_at
+ * `document`, `role_id`, `status_id`, `type_document`, `first_name`, `last_name`, 
+ * `username`, `email`, `contact_number`, `password`, `enabled`, 
+ * `created_at`,`updated_at`
  * 
  * @author Carlos Páez
  */
@@ -93,3 +95,13 @@ User.init(
         updatedAt: false,
     }
 )
+
+
+
+User.belongsTo(Role, {
+    foreignKey: 'role_id',
+    
+})
+User.belongsTo(Status, {
+    foreignKey: 'status_id'
+})

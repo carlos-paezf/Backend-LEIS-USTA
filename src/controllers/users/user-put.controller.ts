@@ -14,10 +14,9 @@ class UserController_PUT extends UserDAO_PUT {
      * @param {Request} req - Request - This is the request object that is passed to the function
      * @param {Response} res - Response - This is the response object that will be sent back to the client
      */
-    public updateUserByDocument = (req: Request, res: Response): void => {
+    public updateUserByDocument = (req: Request, res: Response) => {
         const { document } = req.params
-        const { first_name, last_name, email } = req.body
-        UserDAO_PUT.updateUserByDocument({ document, first_name, last_name, email }, res)
+        UserDAO_PUT.updateUserByDocument({ document, ...req.body }, res)
     }
 
     /**

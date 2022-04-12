@@ -1,6 +1,6 @@
 import { red } from "colors"
 import { Response } from "express"
-import { User } from "../../models"
+import { Role, Status, User } from "../../models"
 
 
 /**
@@ -20,7 +20,22 @@ export class UsersDAO_GET {
             const { from, limit, all } = params
             const { count, rows } = await User.findAndCountAll({
                 offset: from, limit,
-                where: (!all) ? { 'enabled': true } : { }
+                attributes: [
+                    'document', 'type_document',
+                    'first_name', 'last_name', 'username',
+                    'email', 'contact_number', 'enabled'
+                ],
+                where: (!all) ? { 'enabled': true } : {},
+                include: [
+                    {
+                        model: Role,
+                        attributes: ['name', 'description']
+                    },
+                    {
+                        model: Status,
+                        attributes: ['name', 'description']
+                    }
+                ]
             })
             return res.status(200).json({
                 ok: true,
@@ -47,19 +62,36 @@ export class UsersDAO_GET {
     protected static getUserByDocument = async (params: any, res: Response): Promise<any> => {
         try {
             const { document } = params
-            const user = await User.findByPk(document)
+            const user = await User.findByPk(document, {
+                attributes: [
+                    'document', 'type_document',
+                    'first_name', 'last_name', 'username',
+                    'email', 'contact_number', 'enabled'
+                ],
+                include: [
+                    {
+                        model: Role,
+                        attributes: ['name', 'description']
+                    },
+                    {
+                        model: Status,
+                        attributes: ['name', 'description']
+                    }
+                ]
+            })
             if (!user) return res.status(400).json({
                 ok: false,
                 msg: `No existe un usuario con el documento ${document}`
             })
-            if (!user.enabled) return res.status(400).json({ 
-                ok: false, 
+            if (user.enabled === false) return res.status(400).json({
+                ok: false,
                 msg: `El usuario con el documento ${document} está inhabilitado`,
+                user
             })
             return res.json({ ok: true, user })
         } catch (error) {
-            return res.status(500).json({ 
-                ok: false, 
+            return res.status(500).json({
+                ok: false,
                 msg: 'Comuníquese con el Administrador'
             })
         }

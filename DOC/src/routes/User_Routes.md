@@ -14,8 +14,14 @@ class UserRoutes {
     }
 
     public config = () => {
-        this.userRoutes.get('/', userControllerGet.getAllUsers)
-        this.userRoutes.get('/:document', userControllerGet.getUserByDocument)
+        this.userRoutes.get('', [
+            validateJWT,
+            validateRolFromDB(MODULES.users, PERMISSIONS.read),
+        ], userControllerGet.getAllUsers)
+        this.userRoutes.get('/:document', [
+            validateJWT,
+            validateRolFromDB(MODULES.users, PERMISSIONS.read),
+        ], userControllerGet.getUserByDocument)
     }
 }
 ```
@@ -36,6 +42,8 @@ class UserRoutes {
     public config = () => {
         ...
         this.userRoutes.post('/create', [
+            validateJWT,
+            validateRolFromDB(MODULES.users, PERMISSIONS.create),
             check([
                 'document', 'type_document',
                 'first_name', 'last_name', 'username',
@@ -67,20 +75,24 @@ class UserRoutes {
     public config = () => {
         ...
         this.userRoutes.put('/update/:document', [
+            validateJWT,
+            validateRolFromDB(MODULES.users, PERMISSIONS.update),
             check([
                 'role_id', "status_id", 'type_document',
-                'first_name', 'last_name', 'username', 
+                'first_name', 'last_name', 'username',
                 'email', 'contact_number', 'password',
             ], 'No se pueden enviar campos vacíos').optional().not().isEmpty(),
             check('email', 'Debe ingresar un correo valido').optional().isEmail(),
             check('username').optional().custom(usernameAlreadyUsed),
             check('email').optional().custom(emailAlreadyUsed),
             check('role_id').optional().custom(roleExists),
-            check('status_id').optional().custom(statusExists),
             validateFieldsErrors
         ], userControllerPut.updateUserByDocument)
 
-        this.userRoutes.put('/enable/:document', userControllerPut.enableUserByDocument)
+        this.userRoutes.put('/enable/:document', [
+            validateJWT,
+            validateRolFromDB(MODULES.users, PERMISSIONS.update),
+        ], userControllerPut.enableUserByDocument)
     }
 }
 ```
@@ -100,8 +112,14 @@ class UserRoutes {
 
     public config = () => {
         ...
-        this.userRoutes.delete('/disable/:document', userControllerDelete.disableUserByDocument)
-        this.userRoutes.delete('/remove/:document', userControllerDelete.permanentlyDeleteUserByDocument)
+        this.userRoutes.delete('/disable/:document', [
+            validateJWT,
+            validateRolFromDB(MODULES.users, PERMISSIONS.update),
+        ], userControllerDelete.disableUserByDocument)
+        this.userRoutes.delete('/remove/:document', [
+            validateJWT,
+            validateRolFromDB(MODULES.users, PERMISSIONS.delete),
+        ], userControllerDelete.permanentlyDeleteUserByDocument)
     }
 }
 ```

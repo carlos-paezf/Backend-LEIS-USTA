@@ -1,6 +1,6 @@
 import { red } from "colors";
 import { Response } from "express";
-import { Role, Status, User } from "../../models";
+import { Role, User } from "../../models";
 import { genSaltSync, hashSync } from 'bcryptjs';
 
 
@@ -21,17 +21,7 @@ export class UserDAO_PUT {
         try {
             const { document, password, ...rest } = params
             const user = await User.findByPk(document, {
-                attributes: ['document'],
-                include: [
-                    {
-                        model: Role,
-                        attributes: ['name', 'description']
-                    },
-                    {
-                        model: Status,
-                        attributes: ['name', 'description']
-                    }
-                ]
+                attributes: ['document']
             })
 
             if (!user) return res.status(400).json({

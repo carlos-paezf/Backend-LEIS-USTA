@@ -21,6 +21,7 @@ export class Server {
         prod: process.env.PROD_HOST
     }
     private _paths = {
+        auth: '/api/auth',
         users: '/api/private/users'
     }
 
@@ -44,6 +45,7 @@ export class Server {
     }
 
     public routes(): void {
+        this._app.use(this._paths.auth, authRoutes)
         this._app.use(this._paths.users, userRoutes)
     }
 

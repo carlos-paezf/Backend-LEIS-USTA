@@ -1,8 +1,9 @@
 import { Router } from "express";
 import { check } from "express-validator";
 import { userControllerDelete, userControllerGet, userControllerPost, userControllerPut } from "../controllers/users";
-import { documentAlreadyUsed, emailAlreadyUsed, roleExists, statusExists, usernameAlreadyUsed } from "../helpers";
-import { validateFieldsErrors } from '../middlewares/validate-fields.middleware';
+import { documentAlreadyUsed, emailAlreadyUsed, roleExists, usernameAlreadyUsed } from "../handlers";
+import { MODULES, PERMISSIONS } from "../helpers";
+import { validateJWT, validateFieldsErrors, validateRolFromDB } from "../middlewares";
 
 
 /**
@@ -27,10 +28,18 @@ class UserRoutes {
      * A function that is called when the class is instantiated. 
      */
     public config = () => {
-        this.userRoutes.get('', userControllerGet.getAllUsers)
-        this.userRoutes.get('/:document', userControllerGet.getUserByDocument)
+        this.userRoutes.get('', [
+            validateJWT,
+            validateRolFromDB(MODULES.users, PERMISSIONS.read),
+        ], userControllerGet.getAllUsers)
+        this.userRoutes.get('/:document', [
+            validateJWT,
+            validateRolFromDB(MODULES.users, PERMISSIONS.read),
+        ], userControllerGet.getUserByDocument)
 
         this.userRoutes.post('/create', [
+            validateJWT,
+            validateRolFromDB(MODULES.users, PERMISSIONS.create),
             check([
                 'document', 'type_document',
                 'first_name', 'last_name', 'username',
@@ -44,23 +53,33 @@ class UserRoutes {
         ], userControllerPost.createUser)
 
         this.userRoutes.put('/update/:document', [
+            validateJWT,
+            validateRolFromDB(MODULES.users, PERMISSIONS.update),
             check([
                 'role_id', "status_id", 'type_document',
-                'first_name', 'last_name', 'username', 
+                'first_name', 'last_name', 'username',
                 'email', 'contact_number', 'password',
             ], 'No se pueden enviar campos vacíos').optional().not().isEmpty(),
             check('email', 'Debe ingresar un correo valido').optional().isEmail(),
             check('username').optional().custom(usernameAlreadyUsed),
             check('email').optional().custom(emailAlreadyUsed),
             check('role_id').optional().custom(roleExists),
-            check('status_id').optional().custom(statusExists),
             validateFieldsErrors
         ], userControllerPut.updateUserByDocument)
 
-        this.userRoutes.put('/enable/:document', userControllerPut.enableUserByDocument)
-        
-        this.userRoutes.delete('/disable/:document', userControllerDelete.disableUserByDocument)
-        this.userRoutes.delete('/remove/:document', userControllerDelete.permanentlyDeleteUserByDocument)
+        this.userRoutes.put('/enable/:document', [
+            validateJWT,
+            validateRolFromDB(MODULES.users, PERMISSIONS.update),
+        ], userControllerPut.enableUserByDocument)
+
+        this.userRoutes.delete('/disable/:document', [
+            validateJWT,
+            validateRolFromDB(MODULES.users, PERMISSIONS.update),
+        ], userControllerDelete.disableUserByDocument)
+        this.userRoutes.delete('/remove/:document', [
+            validateJWT,
+            validateRolFromDB(MODULES.users, PERMISSIONS.delete),
+        ], userControllerDelete.permanentlyDeleteUserByDocument)
     }
 }
 

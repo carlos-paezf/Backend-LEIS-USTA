@@ -1,12 +1,14 @@
-# Status Model
+# Module Model
+
+En este modelo vamos a mapear los datos de la tabla `modules`, que tiene como objetivo almacenar los módulos de nuestra aplicación, los cuales más adelante tendrán diferentes permisos según los roles.
 
 ```ts
 import { Model, DataTypes } from 'sequelize';
-import { ConnectionDB } from '../config';
+import { ConnectionDB } from '../config/database/connection-db.config';
 
 
-export class Status extends Model {
-    status_id!: Number
+export class Module extends Model {
+    module_id!: Number
     name!: String
     description?: String
     created_at!: Date
@@ -14,18 +16,18 @@ export class Status extends Model {
 }
 
 
-Status.init(
+Module.init(
     {
-        status_id: {
-            primaryKey: true,
-            autoIncrement: true,
+        module_id: {
             type: DataTypes.DOUBLE,
+            primaryKey: true,
             allowNull: false,
+            autoIncrement: true
         },
         name: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true,
+            unique: true
         },
         description:  {
             type: DataTypes.TEXT,
@@ -42,8 +44,7 @@ Status.init(
     },
     {
         sequelize: ConnectionDB.sequelize,
-        modelName: 'status',
-        freezeTableName: true,
+        modelName: 'modules',
         createdAt: false,
         updatedAt: false
     }

@@ -4,6 +4,7 @@ import cors from 'cors'
 import morgan from 'morgan'
 import { green } from 'colors'
 import userRoutes from '../../routes/user.routes';
+import authRoutes from '../../routes/auth.routes'
 
 
 /**
@@ -20,6 +21,7 @@ export class Server {
         prod: process.env.PROD_HOST
     }
     private _paths = {
+        auth: '/api/auth',
         users: '/api/private/users'
     }
 
@@ -59,6 +61,7 @@ export class Server {
      * This is where we define the routes that the server will respond to.
      */
     public routes(): void {
+        this._app.use(this._paths.auth, authRoutes)
         this._app.use(this._paths.users, userRoutes)
     }
 

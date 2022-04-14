@@ -1,6 +1,8 @@
 import { red } from "colors"
 import { Response } from "express"
-import { Role, Status, User } from "../../models"
+import { Role, User } from "../../models"
+import { ConnectionDB } from '../../config';
+import { USERS_SQL } from "../../repositories";
 
 
 /**
@@ -23,16 +25,13 @@ export class UsersDAO_GET {
                 attributes: [
                     'document', 'type_document',
                     'first_name', 'last_name', 'username',
-                    'email', 'contact_number', 'enabled'
+                    'email', 'contact_number', 'enabled',
+                    [ConnectionDB.sequelize.literal(USERS_SQL.CASE_STATUS), 'status'],
                 ],
                 where: (!all) ? { 'enabled': true } : {},
                 include: [
                     {
                         model: Role,
-                        attributes: ['name', 'description']
-                    },
-                    {
-                        model: Status,
                         attributes: ['name', 'description']
                     }
                 ]
@@ -66,15 +65,12 @@ export class UsersDAO_GET {
                 attributes: [
                     'document', 'type_document',
                     'first_name', 'last_name', 'username',
-                    'email', 'contact_number', 'enabled'
+                    'email', 'contact_number', 'enabled',
+                    [ConnectionDB.sequelize.literal(USERS_SQL.CASE_STATUS), 'status'],
                 ],
                 include: [
                     {
                         model: Role,
-                        attributes: ['name', 'description']
-                    },
-                    {
-                        model: Status,
                         attributes: ['name', 'description']
                     }
                 ]

@@ -39,12 +39,4 @@ export const roleExists = async (roleId: any): Promise<any> => {
     })
     if (!roleExists) throw new Error(`No existe un rol con el id ${roleId}`)
 }
-
-
-export const statusExists = async (statusId: any): Promise<any> => {
-    const statusExists = await Status.findByPk(statusId, {
-        attributes: ['status_id']
-    })
-    if (!statusExists) throw new Error(`No existe un estatus con el id ${statusId}`)
-}
 ```

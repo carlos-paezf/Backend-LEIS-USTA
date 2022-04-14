@@ -1,15 +1,15 @@
 import { Model, DataTypes } from 'sequelize';
-import { ConnectionDB } from '../config';
+import { ConnectionDB } from '../config/database/connection-db.config';
 
 
 /**
- * The Status class extends the Model class and has the following properties: 
- * status_id, name, description, created_at, updated_at
+ * The Operation class extends the Model class and has the following properties: 
+ * `permission_id`, `name`, `description`, `created_at`, `updated_at`
  * 
  * @author Carlos Páez
  */
-export class Status extends Model {
-    status_id!: Number
+export class Permission extends Model {
+    permission_id!: Number
     name!: String
     description?: String
     created_at!: Date
@@ -17,18 +17,19 @@ export class Status extends Model {
 }
 
 
-Status.init(
+/* Defining the model and the table name. */
+Permission.init(
     {
-        status_id: {
-            primaryKey: true,
-            autoIncrement: true,
+        permission_id: {
             type: DataTypes.DOUBLE,
+            primaryKey: true,
             allowNull: false,
+            autoIncrement: true
         },
         name: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true,
+            unique: true
         },
         description:  {
             type: DataTypes.TEXT,
@@ -45,8 +46,7 @@ Status.init(
     },
     {
         sequelize: ConnectionDB.sequelize,
-        modelName: 'status',
-        freezeTableName: true,
+        modelName: 'permissions',
         createdAt: false,
         updatedAt: false
     }

@@ -4,7 +4,7 @@ import { ConnectionDB } from '../config';
 
 /**
  * The Role class extends the Model class and has the following properties: 
- * role_id, name, description, created_at, updated_at
+ * `role_id`, `name`, `description`, `created_at`, `updated_at`
  * 
  * @author Carlos Páez
  */
@@ -15,6 +15,7 @@ export class Role extends Model {
     created_at!: Date
     updated_at!: Date
 }
+
 
 /* Defining the model and the table name. */
 Role.init(

@@ -54,7 +54,7 @@
 ## Instalación de Paquetes necesarios
 
 ```txt
-npm i express express-validator colors cors morgan dotenv bcryptjs
+npm i express express-validator colors cors morgan dotenv bcryptjs jsonwebtoken
 ```
 <!-- ```txt
 npm i express colors cors morgan dotenv pg-promise
@@ -88,6 +88,10 @@ npm install @types/pg-promise --save-dev
 
 ```txt
 npm install @types/bcryptjs --save-dev
+```
+
+```txt
+npm install @types/jsonwebtoken --save-dev
 ```
 
 ## Instalación de Nodemon en modo desarrollo

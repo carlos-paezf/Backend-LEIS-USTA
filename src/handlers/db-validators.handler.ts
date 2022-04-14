@@ -1,4 +1,4 @@
-import { Role, Status, User } from "../models"
+import { Role, User } from "../models"
 
 
 /**
@@ -73,9 +73,9 @@ export const roleExists = async (roleId: any): Promise<any> => {
  * 
  * @author Carlos Páez
  */
-export const statusExists = async (statusId: any): Promise<any> => {
-    const statusExists = await Status.findByPk(statusId, {
-        attributes: ['status_id']
-    })
-    if (!statusExists) throw new Error(`No existe un estatus con el id ${statusId}`)
-}
+// export const statusExists = async (statusId: any): Promise<any> => {
+//     const statusExists = await Status.findByPk(statusId, {
+//         attributes: ['status_id']
+//     })
+//     if (!statusExists) throw new Error(`No existe un estatus con el id ${statusId}`)
+// }

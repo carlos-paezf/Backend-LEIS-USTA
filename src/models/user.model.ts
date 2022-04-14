@@ -1,7 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import { ConnectionDB } from '../config';
-import { Role } from './roles.model';
-import { Status } from './status.model';
+import { Role } from './role.model';
 
 
 /**
@@ -15,7 +14,6 @@ import { Status } from './status.model';
 export class User extends Model {
     document!: String
     role_id!: Number
-    status_id!: Number
     type_document!: String
     first_name!: String
     last_name!: String
@@ -23,6 +21,7 @@ export class User extends Model {
     email!: String
     contact_number!: String
     password!: String
+    status!: Number
     enabled!: Boolean
     created_at!: Date
     updated_at!: Date
@@ -38,10 +37,6 @@ User.init(
             unique: true
         },
         role_id: {
-            type: DataTypes.DOUBLE,
-            allowNull: false,
-        },
-        status_id: {
             type: DataTypes.DOUBLE,
             allowNull: false,
         },
@@ -75,6 +70,10 @@ User.init(
             type: DataTypes.STRING,
             allowNull: false
         },
+        status: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
         enabled: {
             type: DataTypes.BOOLEAN,
             allowNull: false
@@ -100,8 +99,5 @@ User.init(
 
 User.belongsTo(Role, {
     foreignKey: 'role_id',
-    
-})
-User.belongsTo(Status, {
-    foreignKey: 'status_id'
+    onDelete: 'RESTRICT',
 })

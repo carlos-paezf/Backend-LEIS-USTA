@@ -1,18 +1,16 @@
 # User Model
 
-Se tiene un modelo que se encarga de mapear las propiedades de una tabla de la base de datos. Esto es importante en el uso de Sequelize. También se tienen definidas las relaciones con otras tablas mediante el método `belognsTo()`, con lo que diriamos *Un usuario tiene un rol (o un status), y por lo tanto tiene una llave foránea que pertenece a la tabla Roles (o Status)*.
+Se tiene un modelo que se encarga de mapear las propiedades de una tabla de la base de datos. Esto es importante en el uso de Sequelize. También se tienen definidas las relaciones con otras tablas mediante el método `belongsTo()`, con lo que diríamos *Un usuario tiene un rol, y por lo tanto tiene una llave foránea que pertenece a la tabla Roles*.
 
 ```ts
 import { Model, DataTypes } from 'sequelize';
 import { ConnectionDB } from '../config';
-import { Role } from './roles.model';
-import { Status } from './status.model';
+import { Role } from './role.model';
 
 
 export class User extends Model {
     document!: String
     role_id!: Number
-    status_id!: Number
     type_document!: String
     first_name!: String
     last_name!: String
@@ -20,6 +18,7 @@ export class User extends Model {
     email!: String
     contact_number!: String
     password!: String
+    status!: Number
     enabled!: Boolean
     created_at!: Date
     updated_at!: Date
@@ -35,10 +34,6 @@ User.init(
             unique: true
         },
         role_id: {
-            type: DataTypes.DOUBLE,
-            allowNull: false,
-        },
-        status_id: {
             type: DataTypes.DOUBLE,
             allowNull: false,
         },
@@ -72,6 +67,10 @@ User.init(
             type: DataTypes.STRING,
             allowNull: false
         },
+        status: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
         enabled: {
             type: DataTypes.BOOLEAN,
             allowNull: false
@@ -97,9 +96,6 @@ User.init(
 
 User.belongsTo(Role, {
     foreignKey: 'role_id',
-    
-})
-User.belongsTo(Status, {
-    foreignKey: 'status_id'
+    onDelete: 'RESTRICT',
 })
 ```

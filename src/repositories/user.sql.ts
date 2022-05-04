@@ -1,5 +1,5 @@
-export const USERS_SQL = {
-    CASE_STATUS: `CASE "users"."status"
+export enum USERS_SQL {
+    CASE_STATUS = `CASE "usuarios"."status"
         WHEN 1 THEN 'Al día' 
         WHEN 2 THEN 'En mora' 
         WHEN 3 THEN 'En préstamo' 

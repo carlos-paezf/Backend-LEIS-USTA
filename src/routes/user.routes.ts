@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { check } from "express-validator";
+import { body, query } from 'express-validator';
 import { userControllerDelete, userControllerGet, userControllerPost, userControllerPut } from "../controllers/users";
 import { documentAlreadyUsed, emailAlreadyUsed, roleExists, usernameAlreadyUsed } from "../handlers";
 import { MODULES, PERMISSIONS } from "../helpers";
+import { USERS_FIELDS } from "../helpers/mapping";
 import { validateJWT, validateFieldsErrors, validateRolFromDB } from "../middlewares";
 
 
@@ -27,10 +28,11 @@ class UserRoutes {
     /**
      * A function that is called when the class is instantiated. 
      */
-    public config = () => {
+    private config = () => {
         this.userRoutes.get('', [
             validateJWT,
             validateRolFromDB(MODULES.users, PERMISSIONS.read),
+            validateFieldsErrors
         ], userControllerGet.getAllUsers)
         this.userRoutes.get('/:document', [
             validateJWT,
@@ -40,30 +42,30 @@ class UserRoutes {
         this.userRoutes.post('/create', [
             validateJWT,
             validateRolFromDB(MODULES.users, PERMISSIONS.create),
-            check([
-                'document', 'type_document',
-                'first_name', 'last_name', 'username',
-                'email', 'contact_number', 'password'
+            body([
+                USERS_FIELDS.DOCUMENT, USERS_FIELDS.TYPE_DOCUMENT,
+                USERS_FIELDS.FIRST_NAME, USERS_FIELDS.LAST_NAME, USERS_FIELDS.USERNAME,
+                USERS_FIELDS.EMAIL, USERS_FIELDS.CONTACT_NUMBER, USERS_FIELDS.PASSWORD
             ], 'No se pueden enviar campos vacíos').not().isEmpty(),
-            check('email', 'Debe ingresar un correo valido').isEmail(),
-            check('document').custom(documentAlreadyUsed),
-            check('username').custom(usernameAlreadyUsed),
-            check('email').custom(emailAlreadyUsed),
+            body(USERS_FIELDS.EMAIL, 'Debe ingresar un correo valido').isEmail(),
+            body(USERS_FIELDS.DOCUMENT).custom(documentAlreadyUsed),
+            body(USERS_FIELDS.EMAIL).custom(emailAlreadyUsed),
+            body(USERS_FIELDS.USERNAME).custom(usernameAlreadyUsed),
             validateFieldsErrors
         ], userControllerPost.createUser)
 
         this.userRoutes.put('/update/:document', [
             validateJWT,
             validateRolFromDB(MODULES.users, PERMISSIONS.update),
-            check([
-                'role_id', "status_id", 'type_document',
-                'first_name', 'last_name', 'username',
-                'email', 'contact_number', 'password',
+            body([
+                USERS_FIELDS.ROLE, USERS_FIELDS.TYPE_DOCUMENT,
+                USERS_FIELDS.FIRST_NAME, USERS_FIELDS.LAST_NAME, USERS_FIELDS.USERNAME,
+                USERS_FIELDS.EMAIL, USERS_FIELDS.CONTACT_NUMBER, USERS_FIELDS.PASSWORD, USERS_FIELDS.STATUS,
             ], 'No se pueden enviar campos vacíos').optional().not().isEmpty(),
-            check('email', 'Debe ingresar un correo valido').optional().isEmail(),
-            check('username').optional().custom(usernameAlreadyUsed),
-            check('email').optional().custom(emailAlreadyUsed),
-            check('role_id').optional().custom(roleExists),
+            body(USERS_FIELDS.EMAIL, 'Debe ingresar un correo valido').optional().isEmail(),
+            body(USERS_FIELDS.USERNAME).optional().custom(usernameAlreadyUsed),
+            body(USERS_FIELDS.EMAIL).optional().custom(emailAlreadyUsed),
+            body(USERS_FIELDS.ROLE).optional().custom(roleExists),
             validateFieldsErrors
         ], userControllerPut.updateUserByDocument)
 

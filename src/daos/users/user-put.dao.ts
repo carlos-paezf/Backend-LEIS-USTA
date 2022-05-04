@@ -1,7 +1,8 @@
 import { red } from "colors";
 import { Response } from "express";
-import { Role, User } from "../../models";
 import { genSaltSync, hashSync } from 'bcryptjs';
+import { Usuarios } from "../../models";
+import { USERS_FIELDS } from "../../helpers/mapping";
 
 
 /**
@@ -20,8 +21,8 @@ export class UserDAO_PUT {
     protected static updateUserByDocument = async (params: any, res: Response): Promise<any> => {
         try {
             const { document, password, ...rest } = params
-            const user = await User.findByPk(document, {
-                attributes: ['document']
+            const user = await Usuarios.findByPk(document, {
+                attributes: [USERS_FIELDS.DOCUMENT]
             })
 
             if (!user) return res.status(400).json({
@@ -61,8 +62,8 @@ export class UserDAO_PUT {
     protected static enableUserByDocument = async (params: any, res: Response): Promise<any> => {
         try {
             const { document } = params
-            const user = await User.findByPk(document, {
-                attributes: ['document', 'username', 'email', 'enabled']
+            const user = await Usuarios.findByPk(document, {
+                attributes: [USERS_FIELDS.DOCUMENT, USERS_FIELDS.USERNAME, USERS_FIELDS.EMAIL, USERS_FIELDS.ENABLED]
             })
 
             if (!user) return res.status(400).json({

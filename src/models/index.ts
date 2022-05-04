@@ -1,5 +1,5 @@
-export { Module } from "./module.model";
-export { RoleModulePermission } from "./role_module_permission.model";
-export { Permission } from './permission.model';
-export { Role } from "./role.model";
-export { User } from "./user.model";
+export { Modulos } from "./module.model";
+export { RolesModulosPermisos } from "./role_module_permission.model";
+export { Permisos } from './permission.model';
+export { Roles } from "./role.model";
+export { Usuarios } from "./user.model";

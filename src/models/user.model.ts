@@ -1,25 +1,25 @@
 import { Model, DataTypes } from 'sequelize';
 import { ConnectionDB } from '../config';
-import { Role } from './role.model';
+import { Roles } from './role.model';
 
 
 /**
- * The User class extends the Model class and has the following properties: 
- * `document`, `role_id`, `status_id`, `type_document`, `first_name`, `last_name`, 
- * `username`, `email`, `contact_number`, `password`, `enabled`, 
+ * The `Usuarios` class extends the Model class and has the following properties: 
+ * `documento`, `id_rol`, `tipo_documento`, `nombres`, `apellidos`, 
+ * `username`, `email`, `numero_contacto`, `password`, `status`, `enabled`, 
  * `created_at`,`updated_at`
  * 
  * @author Carlos Páez
  */
-export class User extends Model {
-    document!: String
-    role_id!: Number
-    type_document!: String
-    first_name!: String
-    last_name!: String
+export class Usuarios extends Model {
+    documento!: String
+    id_rol!: Number
+    tipo_documento!: String
+    nombres!: String
+    apellidos!: String
     username!: String
     email!: String
-    contact_number!: String
+    numero_contacto!: String
     password!: String
     status!: Number
     enabled!: Boolean
@@ -28,27 +28,27 @@ export class User extends Model {
 }
 
 /* Defining the model and the table name. */
-User.init(
+Usuarios.init(
     {
-        document: {
+        documento: {
             primaryKey: true,
             type: DataTypes.STRING,
             allowNull: false,
             unique: true
         },
-        role_id: {
+        id_rol: {
             type: DataTypes.DOUBLE,
             allowNull: false,
         },
-        type_document: {
+        tipo_documento: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        first_name: {
+        nombres: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        last_name: {
+        apellidos: {
             type: DataTypes.STRING,
             allowNull: false
         },
@@ -62,7 +62,7 @@ User.init(
             allowNull: false,
             unique: true
         },
-        contact_number: {
+        numero_contacto: {
             type: DataTypes.STRING,
             allowNull: false
         },
@@ -89,7 +89,7 @@ User.init(
     },
     {
         sequelize: ConnectionDB.sequelize,
-        modelName: 'users',
+        modelName: 'usuarios',
         createdAt: false,
         updatedAt: false,
     }
@@ -97,7 +97,7 @@ User.init(
 
 
 
-User.belongsTo(Role, {
-    foreignKey: 'role_id',
+Usuarios.belongsTo(Roles, {
+    foreignKey: 'id_rol',
     onDelete: 'RESTRICT',
 })

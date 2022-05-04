@@ -3,35 +3,35 @@ import { ConnectionDB } from '../config/database/connection-db.config';
 
 
 /**
- * The Operation class extends the Model class and has the following properties: 
- * `permission_id`, `name`, `description`, `created_at`, `updated_at`
+ * The `Permisos` class extends the Model class and has the following properties: 
+ * `id_permiso`, `permiso_nombre`, `permiso_descripcion`, `created_at`, `updated_at`
  * 
  * @author Carlos Páez
  */
-export class Permission extends Model {
-    permission_id!: Number
-    name!: String
-    description?: String
+export class Permisos extends Model {
+    id_permiso!: Number
+    permiso_nombre!: String
+    permiso_descripcion!: String
     created_at!: Date
     updated_at!: Date
 }
 
 
 /* Defining the model and the table name. */
-Permission.init(
+Permisos.init(
     {
-        permission_id: {
+        id_permiso: {
             type: DataTypes.DOUBLE,
             primaryKey: true,
             allowNull: false,
             autoIncrement: true
         },
-        name: {
+        permiso_nombre: {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true
         },
-        description:  {
+        permiso_descripcion:  {
             type: DataTypes.TEXT,
             allowNull: true
         },
@@ -46,7 +46,7 @@ Permission.init(
     },
     {
         sequelize: ConnectionDB.sequelize,
-        modelName: 'permissions',
+        modelName: 'permisos',
         createdAt: false,
         updatedAt: false
     }

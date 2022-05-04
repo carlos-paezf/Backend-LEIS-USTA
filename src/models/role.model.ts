@@ -3,35 +3,35 @@ import { ConnectionDB } from '../config';
 
 
 /**
- * The Role class extends the Model class and has the following properties: 
- * `role_id`, `name`, `description`, `created_at`, `updated_at`
+ * The `Roles` class extends the Model class and has the following properties: 
+ * `id_rol`, `rol_nombre`, `rol_descripcion`, `created_at`, `updated_at`
  * 
  * @author Carlos Páez
  */
-export class Role extends Model {
-    role_id!: Number
-    name!: String
-    description?: String
+export class Roles extends Model {
+    id_rol!: Number
+    rol_nombre!: String
+    rol_descripcion!: String
     created_at!: Date
     updated_at!: Date
 }
 
 
 /* Defining the model and the table name. */
-Role.init(
+Roles.init(
     {
-        role_id: {
+        id_rol: {
             primaryKey: true,
             autoIncrement: true,
             type: DataTypes.DOUBLE,
             allowNull: false,
         },
-        name: {
+        rol_nombre: {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true
         },
-        description:  {
+        rol_descripcion:  {
             type: DataTypes.TEXT,
             allowNull: true
         },

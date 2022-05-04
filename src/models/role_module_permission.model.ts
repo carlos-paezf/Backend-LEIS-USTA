@@ -1,37 +1,44 @@
 import { Model, DataTypes } from 'sequelize';
 import { ConnectionDB } from '../config/database/connection-db.config';
-import { Module } from './module.model';
-import { Permission } from './permission.model';
-import { Role } from './role.model';
+import { Modulos } from './module.model';
+import { Permisos } from './permission.model';
+import { Roles } from './role.model';
 
 
 /**
- * The RoleModulePermission class extends the Model class and has the following properties: 
- * `role_id`, `module_id`, `permission_id`
+ * The `RolesModulosPermisos` class extends the Model class and has the following properties: 
+ * `id_rol_modulo_permiso`, `id_rol`, `id_modulo`, `id_permiso`
  * 
  * @author Carlos Páez
  */
-export class RoleModulePermission extends Model{
-    role_id!: Number
-    module_id!: Number
-    permission_id!: Number
+export class RolesModulosPermisos extends Model{
+    id_rol_modulo_permiso!: Number
+    id_rol!: Number
+    id_modulo!: Number
+    id_permiso!: Number
 }
 
 
 /* Defining the model and the table name. */
-RoleModulePermission.init(
+RolesModulosPermisos.init(
     {
-        role_id: {
+        id_rol_modulo_permiso: {
+            type: DataTypes.DOUBLE,
+            primaryKey: true,
+            allowNull: false,
+            autoIncrement: true
+        },
+        id_rol: {
             type: DataTypes.DOUBLE,
             primaryKey: true,
             allowNull: false,
         },
-        module_id: {
+        id_modulo: {
             type: DataTypes.DOUBLE,
             primaryKey: true,
             allowNull: false
         },
-        permission_id: {
+        id_permiso: {
             type: DataTypes.DOUBLE,
             primaryKey: true,
             allowNull: false
@@ -39,7 +46,7 @@ RoleModulePermission.init(
     },
     {
         sequelize: ConnectionDB.sequelize,
-        modelName: 'role_module_permission',
+        modelName: 'roles_modulos_permisos',
         freezeTableName: true,
         createdAt: false,
         updatedAt: false
@@ -47,17 +54,17 @@ RoleModulePermission.init(
 )
 
 
-RoleModulePermission.belongsTo(Role, {
-    foreignKey: 'role_id',
+RolesModulosPermisos.belongsTo(Roles, {
+    foreignKey: 'id_rol',
     onDelete: 'RESTRICT',
 })
 
-RoleModulePermission.belongsTo(Module, {
-    foreignKey: 'module_id',
+RolesModulosPermisos.belongsTo(Modulos, {
+    foreignKey: 'id_modulo',
     onDelete: 'RESTRICT',
 })
 
-RoleModulePermission.belongsTo(Permission, {
-    foreignKey: 'permission_id',
+RolesModulosPermisos.belongsTo(Permisos, {
+    foreignKey: 'id_permiso',
     onDelete: 'RESTRICT',
 })

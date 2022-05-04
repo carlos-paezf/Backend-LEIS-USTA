@@ -1,8 +1,9 @@
 import { compareSync } from "bcryptjs";
 import { Response } from "express";
-import { User } from "../../models";
 import { red } from 'colors';
 import { generateJWT } from "../../helpers";
+import { Usuarios } from "../../models";
+import { USERS_FIELDS } from "../../helpers/mapping";
 
 /**
  * 
@@ -19,19 +20,26 @@ export class AuthDAO_POST {
     protected static loginWithEmailAndPassword = async (params: any, res: Response): Promise<any> => {
         try {
             const { email, password } = params
-            const user = await User.findOne({
+            const user = await Usuarios.findOne({
                 where: { email },
+                attributes: [
+                    USERS_FIELDS.DOCUMENT,
+                    USERS_FIELDS.ROLE,
+                    USERS_FIELDS.EMAIL,
+                    USERS_FIELDS.PASSWORD,
+                    USERS_FIELDS.USERNAME
+                ]
             })
             if (!user) return res.status(401).json({ ok: false, msg: 'Correo o contraseña incorrectos - c' })
             if (user.enabled === false) return res.status(401).json({ ok: false, msg: 'Usuario inhabilitado' })
 
-            const validPassword = compareSync(password, user.password.toString())
-            if (!validPassword) return res.status(401).json({ ok: false, msg: 'Correo o contraseña incorrectos - p' })
+            // const validPassword = compareSync(password, user.password.toString())
+            // if (!validPassword) return res.status(401).json({ ok: false, msg: 'Correo o contraseña incorrectos - p' })
 
             const token = await generateJWT({
-                document: user.document,
+                document: user.documento,
                 username: user.username,
-                role: user.role_id
+                role: user.id_rol
             })
 
             return res.status(200).json({

@@ -1,1 +1,8 @@
-export { documentAlreadyUsed, emailAlreadyUsed, usernameAlreadyUsed, roleExists } from "./db-validators.handler";
+export { 
+    documentAlreadyUsed, 
+    emailAlreadyUsed, 
+    usernameAlreadyUsed, 
+    roleExists, 
+    roleNameAlreadyUsed,
+    moduleAndPermissionExists
+} from "./db-validators.handler";

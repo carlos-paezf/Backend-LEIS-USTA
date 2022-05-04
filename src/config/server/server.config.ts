@@ -5,6 +5,7 @@ import morgan from 'morgan'
 import { green } from 'colors'
 import userRoutes from '../../routes/user.routes';
 import authRoutes from '../../routes/auth.routes'
+import rolesRoutes from '../../routes/roles.routes';
 
 
 /**
@@ -22,7 +23,8 @@ export class Server {
     }
     private _paths = {
         auth: '/api/auth',
-        users: '/api/private/users'
+        users: '/api/private/users',
+        roles: '/api/private/roles'
     }
 
 
@@ -63,6 +65,7 @@ export class Server {
     public routes(): void {
         this._app.use(this._paths.auth, authRoutes)
         this._app.use(this._paths.users, userRoutes)
+        this._app.use(this._paths.roles, rolesRoutes)
     }
 
 

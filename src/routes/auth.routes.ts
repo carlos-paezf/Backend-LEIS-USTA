@@ -10,7 +10,7 @@ class AuthRoutes {
         this.config()
     }
 
-    public config = () => {
+    private config = () => {
         this.authRouter.post('/login', authControllerPost.loginWithEmailAndPassword)
     }
 }

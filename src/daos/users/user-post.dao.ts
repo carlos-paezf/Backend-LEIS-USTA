@@ -1,7 +1,8 @@
 import { red } from "colors";
 import { Response } from "express";
-import { User } from "../../models";
 import { genSaltSync, hashSync } from 'bcryptjs'
+import { Usuarios } from "../../models";
+import { USERS_FIELDS } from "../../helpers/mapping";
 
 
 /**
@@ -22,19 +23,19 @@ export class UserDAO_POST {
 
             const salt = genSaltSync()
             
-            const user = await User.create({
+            const user = await Usuarios.create({
                 ...rest,
                 'password': hashSync(password, salt),
-                role_id: 3,
+                id_rol: 3,
                 status: 1,
                 enabled: 1,
                 created_at: new Date(),
                 updated_at: new Date()
             }, {
                 returning: [
-                    'document', 'type_document', 
-                    'first_name', 'last_name', 'username',
-                    'email', 'contact_number'
+                    USERS_FIELDS.DOCUMENT, USERS_FIELDS.TYPE_DOCUMENT, 
+                    USERS_FIELDS.FIRST_NAME, USERS_FIELDS.LAST_NAME, USERS_FIELDS.USERNAME,
+                    USERS_FIELDS.EMAIL, USERS_FIELDS.CONTACT_NUMBER
                 ]
             })
 

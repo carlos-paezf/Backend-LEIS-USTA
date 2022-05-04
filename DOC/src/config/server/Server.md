@@ -22,7 +22,8 @@ export class Server {
     }
     private _paths = {
         auth: '/api/auth',
-        users: '/api/private/users'
+        users: '/api/private/users',
+        roles: '/api/private/roles'
     }
 
     constructor() {
@@ -47,6 +48,7 @@ export class Server {
     public routes(): void {
         this._app.use(this._paths.auth, authRoutes)
         this._app.use(this._paths.users, userRoutes)
+        this._app.use(this._paths.roles, rolesRoutes)
     }
 
     public async start(): Promise<any> {

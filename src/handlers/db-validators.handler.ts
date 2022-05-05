@@ -94,7 +94,7 @@ export const roleNameAlreadyUsed = async (name: string): Promise<void> => {
  */
 export const moduleAndPermissionExists = async (modulePermission: any[] = []) => {
     if (modulePermission.length === 0) throw new Error('Debe asignar por lo menos 1 permiso sobre un módulo')
-    for (let modPer of modulePermission) {
+    for (const modPer of modulePermission) {
         const moduleExists = await Modulos.findByPk(modPer.id_modulo, {
             attributes: [MODULES_FIELDS.ID]
         })

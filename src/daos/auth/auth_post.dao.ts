@@ -6,6 +6,7 @@ import { Usuarios } from "../../models";
 import { USERS_FIELDS } from "../../helpers/mapping";
 
 /**
+ * This class is used to log in with email and password.
  * 
  * @author Carlos Páez
  */
@@ -33,8 +34,8 @@ export class AuthDAO_POST {
             if (!user) return res.status(401).json({ ok: false, msg: 'Correo o contraseña incorrectos - c' })
             if (user.enabled === false) return res.status(401).json({ ok: false, msg: 'Usuario inhabilitado' })
 
-            // const validPassword = compareSync(password, user.password.toString())
-            // if (!validPassword) return res.status(401).json({ ok: false, msg: 'Correo o contraseña incorrectos - p' })
+            const validPassword = compareSync(password, user.password.toString())
+            if (!validPassword) return res.status(401).json({ ok: false, msg: 'Correo o contraseña incorrectos - p' })
 
             const token = await generateJWT({
                 document: user.documento,

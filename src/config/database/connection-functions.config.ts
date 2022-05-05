@@ -1,9 +1,6 @@
 import pgPromise from 'pg-promise'
 
 
-export interface IClient { }
-
-
 /**
  * The class contains a static method that will convert the column names in the data to camelCase. 
  * 

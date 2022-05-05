@@ -4,7 +4,7 @@ import { MODULES, PERMISSIONS } from '../helpers';
 import { validateRolFromDB } from '../middlewares';
 import { validateJWT } from '../middlewares/validate-jwt.middleware';
 import { validateFieldsErrors } from '../middlewares/validate-fields.middleware';
-import { body, check } from 'express-validator';
+import { body } from 'express-validator';
 import { moduleAndPermissionExists, roleNameAlreadyUsed } from '../handlers';
 import { ROLES_FIELDS } from '../helpers/mapping';
 

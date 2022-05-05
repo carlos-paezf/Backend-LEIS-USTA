@@ -12,17 +12,17 @@ import { Roles } from './role.model';
  * @author Carlos Páez
  */
 export class Usuarios extends Model {
-    documento!: String
-    id_rol!: Number
-    tipo_documento!: String
-    nombres!: String
-    apellidos!: String
-    username!: String
-    email!: String
-    numero_contacto!: String
-    password!: String
-    status!: Number
-    enabled!: Boolean
+    documento!: string
+    id_rol!: number
+    tipo_documento!: string
+    nombres!: string
+    apellidos!: string
+    username!: string
+    email!: string
+    numero_contacto!: string
+    password!: string
+    status!: number
+    enabled!: boolean
     created_at!: Date
     updated_at!: Date
 }

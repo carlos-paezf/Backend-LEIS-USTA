@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { body, query } from 'express-validator';
+import { body } from 'express-validator';
 import { userControllerDelete, userControllerGet, userControllerPost, userControllerPut } from "../controllers/users";
 import { documentAlreadyUsed, emailAlreadyUsed, roleExists, usernameAlreadyUsed } from "../handlers";
 import { MODULES, PERMISSIONS } from "../helpers";

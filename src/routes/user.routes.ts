@@ -2,7 +2,7 @@ import { Router } from "express";
 import { body } from 'express-validator';
 import { userControllerDelete, userControllerGet, userControllerPost, userControllerPut } from "../controllers/users";
 import { documentAlreadyUsed, emailAlreadyUsed, roleExists, usernameAlreadyUsed } from "../handlers";
-import { MODULES, PERMISSIONS } from "../helpers";
+import { MODULES, PERMISSIONS } from "../helpers/enums";
 import { USERS_FIELDS } from "../helpers/mapping";
 import { validateJWT, validateFieldsErrors, validateRolFromDB } from "../middlewares";
 

@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import { NextFunction, Request, Response } from "express";
-import { red } from 'colors';
 import { verify } from 'jsonwebtoken';
+import { internalServerErrorStatus, unauthorizedStatus } from '../daos/status_responses';
 
 
 /**
@@ -18,31 +18,22 @@ import { verify } from 'jsonwebtoken';
 export const validateJWT = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { authorization } = req.headers
-        if (!authorization) return res.status(401).json({
-            ok: false,
-            msg: 'Se debe proveer un Token de acceso'
-        })
+        if (!authorization) return unauthorizedStatus('Se debe proveer un Token de acceso', res)
+
         try {
             const token = authorization.split(' ').at(-1) as string
             const SECRET_KEY = process.env.SECRET_KEY_JWT
-            if (!SECRET_KEY) return res.status(500).json({
-                ok: false,
-                msg: 'Comuníquese con el Administrador'
-            })
+
+            if (!SECRET_KEY) return internalServerErrorStatus('Error in validateJWT: ', 'Error in Secret Key', res) 
+            
             const data = verify(token, SECRET_KEY)
             req.body.jwtPayload = data
+
             next()
         } catch (error) {
-            return res.status(401).json({
-                ok: false,
-                msg: 'JWT invalido'
-            })
+            return unauthorizedStatus('JWT invalido', res)
         }
     } catch (error) {
-        console.log(red('Error in validateJWT: '), error)
-        return res.status(500).json({
-            ok: false,
-            msg: 'Comuníquese con el Administrador'
-        })
+        return internalServerErrorStatus('Error in validateJWT: ', error, res)
     }
 }

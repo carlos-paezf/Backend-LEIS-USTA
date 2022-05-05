@@ -1,9 +1,9 @@
-import { red } from "colors"
 import { Response } from "express"
 import { ConnectionDB } from '../../config';
 import { Roles, Usuarios } from "../../models";
 import { ROLES_FIELDS, USERS_FIELDS } from "../../helpers/mapping";
 import { USERS_SQL } from "../../repositories";
+import { badRequestStatus, internalServerErrorStatus, okStatus } from "../status_responses";
 
 
 /**
@@ -21,10 +21,8 @@ export class UsersDAO_GET {
     protected static getAllUsers = async (params: any, res: Response): Promise<any> => {
         try {
             const { from, limit, all } = params
-            if (from < 0 || limit < 1) return res.status(400).json({
-                ok: false,
-                msg: 'El valor mínimo de from es 0, y el mínimo de limit es 1'
-            })
+            if (from < 0 || limit < 1) return badRequestStatus('El valor mínimo de from es 0, y el mínimo de limit es 1', res)
+
             const { count, rows } = await Usuarios.findAndCountAll({
                 offset: from, limit,
                 attributes: [
@@ -41,17 +39,10 @@ export class UsersDAO_GET {
                     }
                 ]
             })
-            return res.status(200).json({
-                ok: true,
-                from, limit, count, all,
-                data: rows
-            })
+            
+            return okStatus({ from, limit, count, all, data: rows }, res)
         } catch (error) {
-            console.log(red('Error in UserDAO_GET: '), error)
-            return res.status(500).json({
-                ok: false,
-                msg: 'Comuníquese con el Administrador'
-            })
+            return internalServerErrorStatus('Error in UserDAO_GET: ', error, res)
         }
     }
 
@@ -66,7 +57,7 @@ export class UsersDAO_GET {
     protected static getUserByDocument = async (params: any, res: Response): Promise<any> => {
         try {
             const { document } = params
-            
+
             const user = await Usuarios.findByPk(document, {
                 attributes: [
                     USERS_FIELDS.DOCUMENT, USERS_FIELDS.TYPE_DOCUMENT,
@@ -82,23 +73,13 @@ export class UsersDAO_GET {
                 ]
             })
 
-            if (!user) return res.status(400).json({
-                ok: false,
-                msg: `No existe un usuario con el documento ${document}`
-            })
+            if (!user) return badRequestStatus(`No existe un usuario con el documento ${document}`, res)
 
-            if (user.enabled === false) return res.status(400).json({
-                ok: false,
-                msg: `El usuario con el documento ${document} está inhabilitado`,
-                user
-            })
+            if (user.enabled === false) return badRequestStatus(`El usuario con el documento ${document} está inhabilitado`, res)
 
-            return res.json({ ok: true, document, user })
+            return okStatus({ document, user }, res)
         } catch (error) {
-            return res.status(500).json({
-                ok: false,
-                msg: 'Comuníquese con el Administrador'
-            })
+            return internalServerErrorStatus('Error in UserDAO_GET: ', error, res)
         }
     }
 }

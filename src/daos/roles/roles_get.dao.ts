@@ -1,7 +1,7 @@
-import { red } from 'colors';
 import { Response } from 'express';
 import { Modulos, Permisos, Roles, RolesModulosPermisos } from '../../models';
 import { MODULES_FIELDS, PERMISSIONS_FIELDS, ROLES_FIELDS, ROLE_MODULE_PERMISSION_FIELDS } from '../../helpers/mapping';
+import { badRequestStatus, internalServerErrorStatus, okStatus } from '../status_responses';
 
 
 /**
@@ -17,13 +17,11 @@ export class RolesDAO_GET {
      * @param {Response} res - Response 
      * @returns The response object
      */
-    protected static getAllRoles = async (params: any, res: Response) => {
+    protected static getAllRoles = async (params: any, res: Response): Promise<any> => {
         try {
             const { from: offset, limit } = params
-            if (offset < 0 || limit < 1) return res.status(400).json({
-                ok: false,
-                msg: 'El valor mínimo de from es 0, y el mínimo de limit es 1'
-            })
+            if (offset < 0 || limit < 1) return badRequestStatus('El valor mínimo de from es 0, y el mínimo de limit es 1', res)
+
             const { count, rows } = await Roles.findAndCountAll({
                 offset, limit,
                 attributes: [
@@ -33,17 +31,10 @@ export class RolesDAO_GET {
                 ]
             })
 
-            return res.status(200).json({
-                ok: true,
-                from: offset, limit, count,
-                data: rows
-            })
+            return okStatus({ from: offset, limit, count, data: rows }, res)
+
         } catch (error) {
-            console.log(red('Error in RolesDAO_GET: '), error)
-            return res.status(500).json({
-                ok: false,
-                msg: 'Comuníquese con el Administrador'
-            })
+            return internalServerErrorStatus('Error in RolesDAO_GET: ', error, res)
         }
     }
 
@@ -56,20 +47,18 @@ export class RolesDAO_GET {
      * @returns An object that contains the modules to which you have access, 
      * and the permissions on them.
      */
-    protected static getRolePermissionsById = async (params: any, res: Response) => {
+    protected static getRolePermissionsById = async (params: any, res: Response): Promise<any> => {
         try {
             const { roleId: role_id } = params
+            
             const role = await Roles.findByPk(role_id, {
                 attributes: [ROLES_FIELDS.ID]
             })
-            if (!role) return res.status(400).json({
-                ok: false,
-                msg: `No hay ningún rol con el id ${role_id}`
-            })
+            if (!role) return badRequestStatus(`No hay ningún rol con el id ${role_id}`, res)
 
             const { count, rows } = await RolesModulosPermisos.findAndCountAll({
                 attributes: [
-                    ROLE_MODULE_PERMISSION_FIELDS.MODULE, 
+                    ROLE_MODULE_PERMISSION_FIELDS.MODULE,
                     ROLE_MODULE_PERMISSION_FIELDS.PERMISSION
                 ],
                 where: { id_rol: role_id },
@@ -85,23 +74,11 @@ export class RolesDAO_GET {
                 ]
             })
 
-            if (count === 0) return res.status(200).json({
-                ok: true,
-                msg: `El rol identificado con el id ${role_id}, no cuenta con ningún permiso`
-            })
+            if (count === 0) return badRequestStatus(`El rol identificado con el id ${role_id}, no cuenta con ningún permiso`, res)
 
-            return res.status(200).json({
-                ok: true,
-                role_id,
-                count,
-                data: rows
-            })
+            return okStatus({ role_id, count, data: rows }, res)
         } catch (error) {
-            console.log(red('Error in RoleDAO_GET: '), error)
-            return res.status(500).json({
-                ok: false,
-                msg: 'Comuníquese con el administrador'
-            })
+            return internalServerErrorStatus('Error in RoleDAO_GET: ', error, res)
         }
     }
 }

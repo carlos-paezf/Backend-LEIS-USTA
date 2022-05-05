@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { rolesControllerGet, rolesControllerPost } from '../controllers/roles';
-import { MODULES, PERMISSIONS } from '../helpers';
+import { MODULES, PERMISSIONS } from '../helpers/enums';
 import { validateRolFromDB } from '../middlewares';
 import { validateJWT } from '../middlewares/validate-jwt.middleware';
 import { validateFieldsErrors } from '../middlewares/validate-fields.middleware';

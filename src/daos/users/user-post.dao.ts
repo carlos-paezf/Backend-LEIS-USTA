@@ -1,8 +1,8 @@
-import { red } from "colors";
 import { Response } from "express";
 import { genSaltSync, hashSync } from 'bcryptjs'
 import { Usuarios } from "../../models";
 import { USERS_FIELDS } from "../../helpers/mapping";
+import { createdStatus, internalServerErrorStatus } from "../status_responses";
 
 
 /**
@@ -39,13 +39,9 @@ export class UserDAO_POST {
                 ]
             })
 
-            return res.status(201).json({ ok: true, user })
+            return createdStatus({ user }, res)
         } catch (error) {
-            console.log(red('Error in UserDAO_POST: '), error)
-            return res.status(500).json({
-                ok: false,
-                msg: 'Comuníquese con el administrador'
-            })
+            internalServerErrorStatus('Error in UserDAO_POST: ', error, res)
         }
     }
 }

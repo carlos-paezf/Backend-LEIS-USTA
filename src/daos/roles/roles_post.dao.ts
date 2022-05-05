@@ -1,7 +1,7 @@
 import { Response } from "express";
-import { red } from 'colors';
 import { Modulos, Permisos, Roles, RolesModulosPermisos } from "../../models";
 import { MODULES_FIELDS, PERMISSIONS_FIELDS, ROLES_FIELDS, ROLE_MODULE_PERMISSION_FIELDS } from "../../helpers/mapping";
+import { createdStatus, internalServerErrorStatus } from "../status_responses";
 
 
 /** 
@@ -56,19 +56,11 @@ export class RolesDAO_POST {
                         attributes: [PERMISSIONS_FIELDS.NAME, PERMISSIONS_FIELDS.DESCRIPTION]
                     }
                 ]
-            }) 
+            })
 
-            return res.status(201).json({
-                ok: true,
-                role,
-                permissions: rows
-            })
+            return createdStatus({ role, permissions: rows }, res)
         } catch (error) {
-            console.log(red('Error un RolesDAO_POST: '), error)
-            return res.status(500).json({
-                ok: false,
-                msg: 'Comuníquese con el administrador'
-            })
+            return internalServerErrorStatus('Error un RolesDAO_POST: ', error, res)
         }
     }
 }

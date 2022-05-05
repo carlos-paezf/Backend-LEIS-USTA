@@ -3,6 +3,7 @@ import { RolesDAO_GET } from "../../daos/roles";
 
 
 /**
+ * This class is a controller that uses the DAO class to get data from the database.
  * 
  * @author Carlos Páez
  */

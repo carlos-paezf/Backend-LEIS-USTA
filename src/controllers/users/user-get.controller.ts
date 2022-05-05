@@ -3,6 +3,7 @@ import { UsersDAO_GET } from "../../daos/users";
 
 
 /**
+ * It's a class that has two functions that call two functions from another class
  * 
  * @author Carlos Páez
  */

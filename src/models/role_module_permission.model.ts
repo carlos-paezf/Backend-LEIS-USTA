@@ -12,10 +12,10 @@ import { Roles } from './role.model';
  * @author Carlos Páez
  */
 export class RolesModulosPermisos extends Model{
-    id_rol_modulo_permiso!: Number
-    id_rol!: Number
-    id_modulo!: Number
-    id_permiso!: Number
+    id_rol_modulo_permiso!: number
+    id_rol!: number
+    id_modulo!: number
+    id_permiso!: number
 }
 
 

@@ -9,9 +9,9 @@ import { ConnectionDB } from '../config/database/connection-db.config';
  * @author Carlos Páez
  */
 export class Permisos extends Model {
-    id_permiso!: Number
-    permiso_nombre!: String
-    permiso_descripcion!: String
+    id_permiso!: number
+    permiso_nombre!: string
+    permiso_descripcion!: string
     created_at!: Date
     updated_at!: Date
 }

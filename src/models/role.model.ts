@@ -9,9 +9,9 @@ import { ConnectionDB } from '../config';
  * @author Carlos Páez
  */
 export class Roles extends Model {
-    id_rol!: Number
-    rol_nombre!: String
-    rol_descripcion!: String
+    id_rol!: number
+    rol_nombre!: string
+    rol_descripcion!: string
     created_at!: Date
     updated_at!: Date
 }

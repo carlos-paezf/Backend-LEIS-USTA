@@ -1,10 +1,23 @@
 import { Response } from "express";
-import { red } from 'colors';
 import { Modulos, Permisos, Roles, RolesModulosPermisos } from "../../models";
 import { MODULES_FIELDS, PERMISSIONS_FIELDS, ROLES_FIELDS, ROLE_MODULE_PERMISSION_FIELDS } from "../../helpers/mapping";
+import { createdStatus, internalServerErrorStatus } from "../status_responses";
 
 
+/** 
+ * It creates a role, then it creates a relationship between the role and the 
+ * permissions that were sent in the request.
+ * 
+ * @author Carlos Páez
+ */
 export class RolesDAO_POST {
+    /**
+     * It creates a role, then it creates a relationship between the role and the permissions that were
+     * sent in the request.
+     * @param {any} params - {
+     * @param {Response} res - Response
+     * @returns The role and the permissions
+     */
     protected static createRole = async (params: any, res: Response) => {
         try {
             const { rol_nombre, rol_descripcion, permissions } = params
@@ -20,7 +33,7 @@ export class RolesDAO_POST {
                 ]
             })
 
-            for (let modPer of permissions) {
+            for (const modPer of permissions) {
                 await RolesModulosPermisos.create({
                     'id_rol': role.id_rol,
                     'id_modulo': modPer.id_modulo,
@@ -43,19 +56,11 @@ export class RolesDAO_POST {
                         attributes: [PERMISSIONS_FIELDS.NAME, PERMISSIONS_FIELDS.DESCRIPTION]
                     }
                 ]
-            }) 
+            })
 
-            return res.status(201).json({
-                ok: true,
-                role,
-                permissions: rows
-            })
+            return createdStatus({ role, permissions: rows }, res)
         } catch (error) {
-            console.log(red('Error un RolesDAO_POST: '), error)
-            return res.status(500).json({
-                ok: false,
-                msg: 'Comuníquese con el administrador'
-            })
+            return internalServerErrorStatus('Error un RolesDAO_POST: ', error, res)
         }
     }
 }

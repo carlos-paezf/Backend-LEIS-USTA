@@ -3,9 +3,9 @@ import express, { Application, json, urlencoded } from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
 import { green } from 'colors'
-import userRoutes from '../../routes/user.routes';
+import userRoutes from '../../routes/user/user.routes';
 import authRoutes from '../../routes/auth.routes'
-import rolesRoutes from '../../routes/roles.routes';
+import rolesRoutes from '../../routes/role/roles.routes';
 
 
 /**

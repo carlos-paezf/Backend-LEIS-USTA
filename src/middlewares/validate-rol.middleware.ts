@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express"
-import { red } from 'colors';
 import { Modulos, Permisos, RolesModulosPermisos} from "../models";
 import { MODULES_FIELDS, PERMISSIONS_FIELDS } from '../helpers/mapping';
+import { internalServerErrorStatus, unauthorizedStatus } from "../daos/status_responses";
 
 
 /**
@@ -17,28 +17,16 @@ export const validateRolFromDB = (module: number, permission: number) => {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { jwtPayload } = req.body
-            if (!jwtPayload) return res.status(500).json({ 
-                ok: false, 
-                msg: 'Comuníquese con el administrador. Error: JWTValidate' 
-            })
+            if (!jwtPayload) return internalServerErrorStatus('Error in validateRolFromDB: ', 'The jwtPayload is not found in the req.body', res)
 
             const { role } = jwtPayload
-            if (!role) return res.status(500).json({ 
-                ok: false, 
-                msg: 'Comuníquese con el administrador. Error: JWTRol' 
-            })
+            if (!role) return internalServerErrorStatus('Error in validateRolFromDB: ', 'The role is not found in the jwtPayload', res)
 
             const moduleDB = await Modulos.findByPk(module, { attributes: [MODULES_FIELDS.ID] })
-            if (!moduleDB) return res.status(500).json({ 
-                ok: false, 
-                msg: 'Comuníquese con el administrador. Error: DBModule' 
-            })
+            if (!moduleDB) return internalServerErrorStatus('Error in validateRolFromDB: ', 'The specified role does not exist', res)
 
             const permissionDB = await Permisos.findByPk(permission, { attributes: [PERMISSIONS_FIELDS.ID] })
-            if (!permissionDB) return res.status(500).json({ 
-                ok: false, 
-                msg: 'Comuníquese con el administrador. Error: DBPermission' 
-            })
+            if (!permissionDB) return internalServerErrorStatus('Error in validateRolFromDB: ', 'The specified permission does not exist', res)
 
             const roleModulePermission = await RolesModulosPermisos.findOne({
                 where: {
@@ -48,15 +36,11 @@ export const validateRolFromDB = (module: number, permission: number) => {
                 }
             })
 
-            if (!roleModulePermission) return res.status(401).json({ 
-                ok: false, 
-                msg: 'No cuenta con los permisos adecuados para realizar la acción' 
-            })
+            if (!roleModulePermission) return unauthorizedStatus('No cuenta con los permisos adecuados para realizar la acción', res)
 
             next()
         } catch (error) {
-            console.log(red('Error in validateRolFromDB: '), error)
-            return res.status(500).json({ ok: false, msg: 'Comuníquese con el Administrador' })
+            return internalServerErrorStatus('Error in validateRolFromDB: ', error, res)
         }
     }
 }

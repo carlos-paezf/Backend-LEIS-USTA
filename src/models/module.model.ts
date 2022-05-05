@@ -9,9 +9,9 @@ import { ConnectionDB } from '../config/database/connection-db.config';
  * @author Carlos Páez
  */
 export class Modulos extends Model {
-    id_modulo!: Number
-    modulo_nombre!: String
-    modulo_descripcion!: String
+    id_modulo!: number
+    modulo_nombre!: string
+    modulo_descripcion!: string
     created_at!: Date
     updated_at!: Date
 }

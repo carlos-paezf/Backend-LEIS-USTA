@@ -1,3 +1,6 @@
+/**
+ * @author Carlos Páez
+ */
 export enum MODULES {
     users = 1,
     laboratories = 2, 

@@ -1,3 +1,6 @@
+/**
+ * @author Carlos Páez
+ */
 export enum USERS_FIELDS {
     DOCUMENT = "documento",
     ROLE = "id_rol",

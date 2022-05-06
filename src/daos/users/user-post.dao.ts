@@ -3,6 +3,7 @@ import { genSaltSync, hashSync } from 'bcryptjs'
 import { Usuarios } from "../../models";
 import { USERS_FIELDS } from "../../helpers/mapping";
 import { createdStatus, internalServerErrorStatus } from "../status_responses";
+import { ParamsUserDAO_POST } from "../../helpers/interfaces";
 
 
 /**
@@ -17,7 +18,7 @@ export class UserDAO_POST {
      * @param {Response} res - Response; Express.Response
      * @returns a promise.
      */
-    protected static createUser = async (params: any, res: Response) => {
+    protected static createUser = async (params: ParamsUserDAO_POST, res: Response): Promise<unknown> => {
         try {
             const { password, ...rest } = params
 

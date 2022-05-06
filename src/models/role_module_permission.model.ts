@@ -7,12 +7,11 @@ import { Roles } from './role.model';
 
 /**
  * The `RolesModulosPermisos` class extends the Model class and has the following properties: 
- * `id_rol_modulo_permiso`, `id_rol`, `id_modulo`, `id_permiso`
+ * `id_rol`, `id_modulo`, `id_permiso`
  * 
  * @author Carlos Páez
  */
 export class RolesModulosPermisos extends Model{
-    id_rol_modulo_permiso!: number
     id_rol!: number
     id_modulo!: number
     id_permiso!: number
@@ -22,12 +21,6 @@ export class RolesModulosPermisos extends Model{
 /* Defining the model and the table name. */
 RolesModulosPermisos.init(
     {
-        id_rol_modulo_permiso: {
-            type: DataTypes.DOUBLE,
-            primaryKey: true,
-            allowNull: false,
-            autoIncrement: true
-        },
         id_rol: {
             type: DataTypes.DOUBLE,
             primaryKey: true,

@@ -4,6 +4,7 @@ import { Roles, Usuarios } from "../../models";
 import { ROLES_FIELDS, USERS_FIELDS } from "../../helpers/mapping";
 import { USERS_SQL } from "../../repositories";
 import { badRequestStatus, internalServerErrorStatus, okStatus } from "../status_responses";
+import { ParamsUserDAO_GETAll, ParamsUserDAO_GETByID } from "../../helpers/interfaces";
 
 
 /**
@@ -18,7 +19,7 @@ export class UsersDAO_GET {
      * @param {Response} res - Response
      * @returns The response object.
      */
-    protected static getAllUsers = async (params: any, res: Response): Promise<any> => {
+    protected static getAllUsers = async (params: ParamsUserDAO_GETAll, res: Response): Promise<unknown> => {
         try {
             const { from, limit, all } = params
             if (from < 0 || limit < 1) return badRequestStatus('El valor mínimo de from es 0, y el mínimo de limit es 1', res)
@@ -30,6 +31,7 @@ export class UsersDAO_GET {
                     USERS_FIELDS.FIRST_NAME, USERS_FIELDS.LAST_NAME, USERS_FIELDS.USERNAME,
                     USERS_FIELDS.EMAIL, USERS_FIELDS.CONTACT_NUMBER, USERS_FIELDS.ENABLED,
                     [ConnectionDB.sequelize.literal(USERS_SQL.CASE_STATUS), USERS_FIELDS.STATUS],
+                    USERS_FIELDS.ROLE
                 ],
                 where: (!all) ? { 'enabled': true } : {},
                 include: [
@@ -54,7 +56,7 @@ export class UsersDAO_GET {
      * @param {Response} res - Response
      * @returns The user object
      */
-    protected static getUserByDocument = async (params: any, res: Response): Promise<any> => {
+    protected static getUserByDocument = async (params: ParamsUserDAO_GETByID, res: Response): Promise<unknown> => {
         try {
             const { document } = params
 
@@ -64,6 +66,7 @@ export class UsersDAO_GET {
                     USERS_FIELDS.FIRST_NAME, USERS_FIELDS.LAST_NAME, USERS_FIELDS.USERNAME,
                     USERS_FIELDS.EMAIL, USERS_FIELDS.CONTACT_NUMBER, USERS_FIELDS.ENABLED,
                     [ConnectionDB.sequelize.literal(USERS_SQL.CASE_STATUS), USERS_FIELDS.STATUS],
+                    USERS_FIELDS.ROLE
                 ],
                 include: [
                     {

@@ -1,5 +1,6 @@
 import { Modulos, Permisos, Roles, Usuarios } from "../models"
 import { MODULES_FIELDS, PERMISSIONS_FIELDS, ROLES_FIELDS, USERS_FIELDS } from "../helpers/mapping"
+import { Permission } from "../helpers/interfaces"
 
 
 
@@ -61,7 +62,7 @@ export const usernameAlreadyUsed = async (username: string): Promise<void> => {
  * 
  * @author Carlos Páez
  */
-export const roleExists = async (roleId: any): Promise<any> => {
+export const roleExists = async (roleId: string | number): Promise<void> => {
     const roleExists = await Roles.findByPk(roleId, {
         attributes: [ROLES_FIELDS.ID]
     })
@@ -92,17 +93,17 @@ export const roleNameAlreadyUsed = async (name: string): Promise<void> => {
  * 
  * @author Carlos Páez
  */
-export const moduleAndPermissionExists = async (modulePermission: any[] = []) => {
+export const moduleAndPermissionExists = async (modulePermission: Permission[] = []): Promise<void> => {
     if (modulePermission.length === 0) throw new Error('Debe asignar por lo menos 1 permiso sobre un módulo')
     for (const modPer of modulePermission) {
         const moduleExists = await Modulos.findByPk(modPer.id_modulo, {
             attributes: [MODULES_FIELDS.ID]
         })
-        if (!moduleExists) throw new Error(`No existe ningún módulo con el id ${modPer.module_id}`)
+        if (!moduleExists) throw new Error(`No existe ningún módulo con el id ${modPer.id_modulo}`)
 
         const permissionExists = await Permisos.findByPk(modPer.id_permiso, {
             attributes: [PERMISSIONS_FIELDS.ID]
         })
-        if (!permissionExists) throw new Error(`No existe ningún permiso con el id ${modPer.permission_id}`)
+        if (!permissionExists) throw new Error(`No existe ningún permiso con el id ${modPer.id_permiso}`)
     }
 }

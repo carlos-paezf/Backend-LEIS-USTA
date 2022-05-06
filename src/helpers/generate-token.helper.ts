@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import { sign } from "jsonwebtoken"
 import { red } from 'colors';
+import { DataJWT } from './interfaces';
 
 
 const SECRET_KEY = process.env.SECRET_KEY_JWT
@@ -13,7 +14,7 @@ const SECRET_KEY = process.env.SECRET_KEY_JWT
  * 
  * @author Carlos Páez
  */
-export const generateJWT = (data: any = {}) => {
+export const generateJWT = (data: DataJWT) => {
     return new Promise((resolve, reject) => {
         const payload = { ...data }
         sign(payload, SECRET_KEY!, {

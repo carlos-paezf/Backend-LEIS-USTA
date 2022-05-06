@@ -3,6 +3,7 @@ import { genSaltSync, hashSync } from 'bcryptjs';
 import { Usuarios } from "../../models";
 import { USERS_FIELDS } from "../../helpers/mapping";
 import { badRequestStatus, internalServerErrorStatus, okStatus } from "../status_responses";
+import { ParamsUserDAO_PUTEnable, ParamsUserDAO_PUTUpdate } from "../../helpers/interfaces";
 
 
 /**
@@ -18,7 +19,7 @@ export class UserDAO_PUT {
      * @param {Response} res - Response
      * @returns The response object
      */
-    protected static updateUserByDocument = async (params: any, res: Response): Promise<any> => {
+    protected static updateUserByDocument = async (params: ParamsUserDAO_PUTUpdate, res: Response): Promise<unknown> => {
         try {
             const { document, password, ...rest } = params
             
@@ -28,9 +29,13 @@ export class UserDAO_PUT {
 
             if (!user) return badRequestStatus(`No existe un usuario con el documento ${document}`, res)
             if (user.enabled === false) return badRequestStatus(`El usuario con el documento ${document} se encuentra inhabilitado`, res)
+            
+            if (password) {
+                const salt = genSaltSync()
+                await user.update({ ...rest, 'password': hashSync(password, salt), 'updated_at': new Date() })
+            }
 
-            const salt = genSaltSync()
-            await user.update({ ...rest, 'password': hashSync(password, salt), 'updated_at': new Date() })
+            await user.update({ ...rest, 'updated_at': new Date() })
 
             return okStatus({ msg: `El usuario con el documento ${document}, ha sido actualizado correctamente`, user }, res)
         } catch (error) {
@@ -46,7 +51,7 @@ export class UserDAO_PUT {
      * @param {Response} res - Response
      * @returns The response object
      */
-    protected static enableUserByDocument = async (params: any, res: Response): Promise<any> => {
+    protected static enableUserByDocument = async (params: ParamsUserDAO_PUTEnable, res: Response): Promise<unknown> => {
         try {
             const { document } = params
 

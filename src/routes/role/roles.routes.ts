@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { rolesControllerGet, rolesControllerPost } from '../../controllers/roles';
-import { RoleMiddlewareGET, RoleMiddlewarePOST } from './middlewares';
+import { rolesControllerDelete, rolesControllerGet, rolesControllerPost, rolesControllerPut } from '../../controllers/roles';
+import { RoleMiddlewareDELETE, RoleMiddlewareGET, RoleMiddlewarePOST, RoleMiddlewarePUT } from './middlewares';
 
 
 /**
@@ -30,6 +30,10 @@ class RolesRoutes {
         this.rolesRouter.get('/:roleId', RoleMiddlewareGET.GET_ROLE, rolesControllerGet.getRolePermissionsById)
 
         this.rolesRouter.post('/create', RoleMiddlewarePOST.POST_CREATE, rolesControllerPost.createRole)
+
+        this.rolesRouter.put('/update/:roleId', RoleMiddlewarePUT.PUT_UPDATE, rolesControllerPut.updateRoleById)
+
+        this.rolesRouter.delete('/delete/:roleId', RoleMiddlewareDELETE.DELETE_DESTROY, rolesControllerDelete.deleteRoleByID)
     }
 }
 

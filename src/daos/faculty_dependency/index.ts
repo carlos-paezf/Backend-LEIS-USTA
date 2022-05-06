@@ -1,0 +1,1 @@
+export { FacultyDependencyDAO_GET } from './faculty_dependency-get.dao';

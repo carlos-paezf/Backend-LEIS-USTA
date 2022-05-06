@@ -4,6 +4,7 @@ import { generateJWT } from "../../helpers";
 import { Usuarios } from "../../models";
 import { USERS_FIELDS } from "../../helpers/mapping";
 import { internalServerErrorStatus, okStatus, unauthorizedStatus } from "../status_responses";
+import { ParamsAuthDAO_POSTLogin } from "../../helpers/interfaces";
 
 /**
  * This class is used to log in with email and password.
@@ -18,7 +19,7 @@ export class AuthDAO_POST {
      * @param {Response} res 
      * @returns 
      */
-    protected static loginWithEmailAndPassword = async (params: any, res: Response): Promise<any> => {
+    protected static loginWithEmailAndPassword = async (params: ParamsAuthDAO_POSTLogin, res: Response): Promise<unknown> => {
         try {
             const { email, password } = params
 

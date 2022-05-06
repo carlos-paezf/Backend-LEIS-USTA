@@ -1,3 +1,4 @@
+export { FACULTY_DEPENDENCY_FIELDS } from './faculty_dependency.fields';
 export { MODULES_FIELDS } from "./module.fields";
 export { PERMISSIONS_FIELDS } from "./permission.fields";
 export { ROLE_MODULE_PERMISSION_FIELDS } from "./role_module_permission.fields";

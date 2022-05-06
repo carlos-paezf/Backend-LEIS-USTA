@@ -2,6 +2,8 @@ import { Response } from "express";
 import { Modulos, Permisos, Roles, RolesModulosPermisos } from "../../models";
 import { MODULES_FIELDS, PERMISSIONS_FIELDS, ROLES_FIELDS, ROLE_MODULE_PERMISSION_FIELDS } from "../../helpers/mapping";
 import { createdStatus, internalServerErrorStatus } from "../status_responses";
+import { ParamsRoleDAO_POST } from "../../helpers/interfaces";
+import { createRolesModulesPermissions } from "./roles-modules-permissions.dao";
 
 
 /** 
@@ -14,13 +16,14 @@ export class RolesDAO_POST {
     /**
      * It creates a role, then it creates a relationship between the role and the permissions that were
      * sent in the request.
+     * 
      * @param {any} params - {
      * @param {Response} res - Response
      * @returns The role and the permissions
      */
-    protected static createRole = async (params: any, res: Response) => {
+    protected static createRole = async (params: ParamsRoleDAO_POST, res: Response) => {
         try {
-            const { rol_nombre, rol_descripcion, permissions } = params
+            const { rol_nombre, rol_descripcion, permisos } = params
 
             const role = await Roles.create({
                 rol_nombre,
@@ -33,16 +36,10 @@ export class RolesDAO_POST {
                 ]
             })
 
-            for (const modPer of permissions) {
-                await RolesModulosPermisos.create({
-                    'id_rol': role.id_rol,
-                    'id_modulo': modPer.id_modulo,
-                    'id_permiso': modPer.id_permiso,
-                })
-            }
+            await createRolesModulesPermissions(role.id_rol, permisos)
 
             const { rows } = await RolesModulosPermisos.findAndCountAll({
-                attributes: [ROLE_MODULE_PERMISSION_FIELDS.ID, ROLE_MODULE_PERMISSION_FIELDS.PERMISSION],
+                attributes: [ ROLE_MODULE_PERMISSION_FIELDS.PERMISSION],
                 where: {
                     'id_rol': +role.id_rol
                 },

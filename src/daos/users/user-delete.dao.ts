@@ -2,6 +2,7 @@ import { Response } from "express"
 import { Usuarios } from "../../models";
 import { USERS_FIELDS } from "../../helpers/mapping";
 import { badRequestStatus, internalServerErrorStatus, okStatus } from "../status_responses";
+import { ParamsUserDAO_DELETEDestroy, ParamsUserDAO_DELETEDisable } from "../../helpers/interfaces";
 
 
 /**
@@ -17,7 +18,7 @@ export class UserDAO_DELETE {
      * @param {Response} res - Response
      * @returns The response object
      */
-    protected static disableUserByDocument = async (params: any, res: Response): Promise<any> => {
+    protected static disableUserByDocument = async (params: ParamsUserDAO_DELETEDisable, res: Response): Promise<unknown> => {
         try {
             const { document } = params
             
@@ -45,7 +46,7 @@ export class UserDAO_DELETE {
      * @param {Response} res - Response
      * @returns A confirmation message 
      */
-    protected static permanentlyDeleteUserByDocument = async (params: any, res: Response): Promise<any> => {
+    protected static permanentlyDeleteUserByDocument = async (params: ParamsUserDAO_DELETEDestroy, res: Response): Promise<unknown> => {
         try {
             const { document } = params
 

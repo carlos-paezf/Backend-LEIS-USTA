@@ -38,11 +38,10 @@ CREATE UNIQUE INDEX idx_roles_rol_nombre ON roles (rol_nombre);
 /* Tabla: Roles-Módulos-Permisos */
 /* ---------------------------------------------------------- */
 CREATE TABLE roles_modulos_permisos (
-    id_rol_modulo_permiso SERIAL NOT NULL,
     id_rol INT2 NOT NULL,
     id_modulo INT2 NOT NULL,
     id_permiso INT2 NOT NULL,
-    CONSTRAINT PK_ROLES_MODULOS_PERMISOS PRIMARY KEY (id_rol_modulo_permiso),
+    CONSTRAINT PK_ROLES_MODULOS_PERMISOS PRIMARY KEY (id_rol, id_modulo, id_permiso),
     CONSTRAINT FK_ROLES_MODULOS_PERMISOS_ROLES FOREIGN KEY (id_rol) REFERENCES roles (id_rol) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT FK_ROLES_MODULOS_PERMISOS_MODULOS FOREIGN KEY (id_modulo) REFERENCES modulos (id_modulo) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT FK_ROLES_MODULOS_PERMISOS_PERMISOS FOREIGN KEY (id_permiso) REFERENCES permisos (id_permiso) ON DELETE RESTRICT ON UPDATE CASCADE
@@ -76,8 +75,11 @@ CREATE UNIQUE INDEX idx_usuarios_email ON usuarios (email);
 CREATE TABLE facultad_dependencia (
     id_facultad_dependencia SERIAL NOT NULL,
     nombre_facultad_dependencia VARCHAR(45) NOT NULL,
+    created_at DATE NOT NULL,
+    updated_at DATE NOT NULL,
     CONSTRAINT PK_FACULTAD_DEPENDENCIA PRIMARY KEY (id_facultad_dependencia)
 );
+CREATE UNIQUE INDEX idx_facultad_dependencia_nombre_facultad_dependencia ON facultad_dependencia (nombre_facultad_dependencia);
 /* ---------------------------------------------------------- */
 /* Tabla: Facultad-Usuarios */
 /* ---------------------------------------------------------- */

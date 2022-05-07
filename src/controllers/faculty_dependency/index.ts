@@ -1,0 +1,1 @@
+export { facultyDependencyControllerGet } from './faculty_dependency.controller';

@@ -25,6 +25,7 @@ INSERT INTO modulos (modulo_nombre, modulo_descripcion, created_at, updated_at) 
 INSERT INTO modulos (modulo_nombre, modulo_descripcion, created_at, updated_at) VALUES ('Prestamos', 'Módulo para la gestión de prestamos', '2022-04-13', '2022-04-13');
 INSERT INTO modulos (modulo_nombre, modulo_descripcion, created_at, updated_at) VALUES ('Reportes', 'Módulo para la gestión de reportes', '2022-04-13', '2022-04-13');
 INSERT INTO modulos (modulo_nombre, modulo_descripcion, created_at, updated_at) VALUES ('Roles', 'Módulo para la gestión de roles', '2022-04-14', '2022-04-14');
+INSERT INTO modulos (modulo_nombre, modulo_descripcion, created_at, updated_at) VALUES ('Facultad-Dependencia', 'Módulo para la gestión de Facultades o Dependencias', '2022-05-06', '2022-05-06');
 
 
 -- Super Admin
@@ -56,6 +57,10 @@ INSERT INTO roles_modulos_permisos (id_rol, id_modulo, id_permiso) VALUES (1, 7,
 INSERT INTO roles_modulos_permisos (id_rol, id_modulo, id_permiso) VALUES (1, 7, 2);
 INSERT INTO roles_modulos_permisos (id_rol, id_modulo, id_permiso) VALUES (1, 7, 3);
 INSERT INTO roles_modulos_permisos (id_rol, id_modulo, id_permiso) VALUES (1, 7, 4);
+INSERT INTO roles_modulos_permisos (id_rol, id_modulo, id_permiso) VALUES (1, 8, 1);
+INSERT INTO roles_modulos_permisos (id_rol, id_modulo, id_permiso) VALUES (1, 8, 2);
+INSERT INTO roles_modulos_permisos (id_rol, id_modulo, id_permiso) VALUES (1, 8, 3);
+INSERT INTO roles_modulos_permisos (id_rol, id_modulo, id_permiso) VALUES (1, 8, 4);
 
 -- Director(a) de laboratorios
 INSERT INTO roles_modulos_permisos (id_rol, id_modulo, id_permiso) VALUES (2, 1, 1);
@@ -86,6 +91,10 @@ INSERT INTO roles_modulos_permisos (id_rol, id_modulo, id_permiso) VALUES (2, 7,
 INSERT INTO roles_modulos_permisos (id_rol, id_modulo, id_permiso) VALUES (2, 7, 2);
 INSERT INTO roles_modulos_permisos (id_rol, id_modulo, id_permiso) VALUES (2, 7, 3);
 INSERT INTO roles_modulos_permisos (id_rol, id_modulo, id_permiso) VALUES (2, 7, 4);
+INSERT INTO roles_modulos_permisos (id_rol, id_modulo, id_permiso) VALUES (2, 8, 1);
+INSERT INTO roles_modulos_permisos (id_rol, id_modulo, id_permiso) VALUES (2, 8, 2);
+INSERT INTO roles_modulos_permisos (id_rol, id_modulo, id_permiso) VALUES (2, 8, 3);
+INSERT INTO roles_modulos_permisos (id_rol, id_modulo, id_permiso) VALUES (2, 8, 4);
 
 -- Laboratorista
 INSERT INTO roles_modulos_permisos (id_rol, id_modulo, id_permiso) VALUES (3, 1, 2);
@@ -106,3 +115,6 @@ INSERT INTO roles_modulos_permisos (id_rol, id_modulo, id_permiso) VALUES (3, 5,
 INSERT INTO roles_modulos_permisos (id_rol, id_modulo, id_permiso) VALUES (3, 6, 1);
 INSERT INTO roles_modulos_permisos (id_rol, id_modulo, id_permiso) VALUES (3, 6, 2);
 INSERT INTO roles_modulos_permisos (id_rol, id_modulo, id_permiso) VALUES (3, 6, 3);
+INSERT INTO roles_modulos_permisos (id_rol, id_modulo, id_permiso) VALUES (3, 8, 2);
+INSERT INTO roles_modulos_permisos (id_rol, id_modulo, id_permiso) VALUES (3, 8, 3);
+INSERT INTO roles_modulos_permisos (id_rol, id_modulo, id_permiso) VALUES (3, 8, 4);

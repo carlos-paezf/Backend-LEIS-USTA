@@ -1,0 +1,1 @@
+export { FacultyDependencyMiddlewareGET } from "./get.middleware";

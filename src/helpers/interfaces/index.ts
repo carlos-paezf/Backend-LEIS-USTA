@@ -20,3 +20,8 @@ export {
     ParamsRoleDAO_PUT,
     Permission
 } from './role.interface';
+
+export { 
+    ParamsFacultyDependencyDAO_GETAll,
+    ParamsFacultyDependencyDAO_GETByID
+} from './faculty_dependency.interface';

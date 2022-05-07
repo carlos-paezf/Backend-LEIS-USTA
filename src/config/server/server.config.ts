@@ -6,6 +6,7 @@ import { green } from 'colors'
 import userRoutes from '../../routes/user/user.routes';
 import authRoutes from '../../routes/auth.routes'
 import rolesRoutes from '../../routes/role/roles.routes';
+import facultyDependencyRoutes from '../../routes/faculty_dependency/faculty_dependency.routes';
 
 
 /**
@@ -24,7 +25,8 @@ export class Server {
     private _paths = {
         auth: '/api/auth',
         users: '/api/private/users',
-        roles: '/api/private/roles'
+        roles: '/api/private/roles',
+        faculties_dependencies: '/api/private/faculties-dependencies'
     }
 
 
@@ -66,6 +68,7 @@ export class Server {
         this._app.use(this._paths.auth, authRoutes)
         this._app.use(this._paths.users, userRoutes)
         this._app.use(this._paths.roles, rolesRoutes)
+        this._app.use(this._paths.faculties_dependencies, facultyDependencyRoutes)
     }
 
 

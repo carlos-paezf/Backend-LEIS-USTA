@@ -1,5 +1,5 @@
-import { Modulos, Permisos, Roles, Usuarios } from "../models"
-import { MODULES_FIELDS, PERMISSIONS_FIELDS, ROLES_FIELDS, USERS_FIELDS } from "../helpers/mapping"
+import { FacultadDependencia, Modulos, Permisos, Roles, Usuarios } from "../models"
+import { FACULTY_DEPENDENCY_FIELDS, MODULES_FIELDS, PERMISSIONS_FIELDS, ROLES_FIELDS, USERS_FIELDS } from "../helpers/mapping"
 import { Permission } from "../helpers/interfaces"
 
 
@@ -106,4 +106,19 @@ export const moduleAndPermissionExists = async (modulePermission: Permission[] =
         })
         if (!permissionExists) throw new Error(`No existe ningún permiso con el id ${modPer.id_permiso}`)
     }
+}
+
+
+/**
+ * If a facultyDependency with the given name exists, throw an error
+ * @param {string} facultyDependencyName - string
+ * 
+ * @author Carlos Páez
+ */
+export const facultyDependencyNameAlreadyUsed = async (facultyDependencyName: string) => {
+    const facultyDependencyExists = await FacultadDependencia.findOne({
+        attributes: [FACULTY_DEPENDENCY_FIELDS.NAME],
+        where: { nombre_facultad_dependencia: facultyDependencyName }
+    })
+    if (facultyDependencyExists) throw new Error(`Ya existe una Facultad-Dependencia con el nombre ${facultyDependencyName}`)
 }

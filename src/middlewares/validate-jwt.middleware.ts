@@ -21,6 +21,9 @@ export const validateJWT = async (req: Request, res: Response, next: NextFunctio
         if (!authorization) return unauthorizedStatus('Se debe proveer un Token de acceso', res)
 
         try {
+            const bearer = authorization.slice(0, 6)
+            if (bearer !== 'Bearer') return unauthorizedStatus('Invalid Authorization', res)
+
             const token = authorization.split(' ').at(-1) as string
             const SECRET_KEY = process.env.SECRET_KEY_JWT
 

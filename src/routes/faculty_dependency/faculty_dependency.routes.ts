@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { facultyDependencyControllerGet } from "../../controllers/faculty_dependency";
-import { FacultyDependencyMiddlewareGET } from "./middlewares";
+import { facultyDependencyControllerGet, facultyDependencyControllerPost } from "../../controllers/faculty_dependency";
+import { FacultyDependencyMiddlewareGET, FacultyDependencyMiddlewarePOST } from "./middlewares";
 
 
 /** 
@@ -27,6 +27,8 @@ class FacultyDependencyRouter {
     private config = (): void => {
         this.facultyDependencyRouter.get('/', FacultyDependencyMiddlewareGET.GET_ALL, facultyDependencyControllerGet.getAllFacultiesDependencies)
         this.facultyDependencyRouter.get('/:facultyDependencyId', FacultyDependencyMiddlewareGET.GET_FACULTY_DEPENDENCY, facultyDependencyControllerGet.getFacultyDependencyById)
+
+        this.facultyDependencyRouter.post('/create', FacultyDependencyMiddlewarePOST.POST_CREATE, facultyDependencyControllerPost.postFacultyDependency)
     }
 }
 

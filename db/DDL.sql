@@ -450,3 +450,17 @@ CREATE TABLE prestamos_exp_herr (
     CONSTRAINT FK_PRESTAMOS_EXPERIMENTO_HERRAMIENTA_DOCUMENTO_LABORATORISTA FOREIGN KEY (documento_laboratorista) REFERENCES usuarios (documento) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT FK_PRESTAMOS_EXPERIMENTO_HERRAMIENTA_DOCUMENTO_SOLICITANTE FOREIGN KEY (documento_solicitante) REFERENCES usuarios (documento) ON DELETE RESTRICT ON UPDATE CASCADE
 );
+/* ---------------------------------------------------------- */
+/* Tabla: Historial de Accicones */
+/* ---------------------------------------------------------- */
+CREATE TABLE historial_acciones (
+    id_historial_acciones SERIAL NOT NULL,
+    documento_usuario INT NOT NULL,
+    id_modulo INT NOT NULL,
+    id_permiso INT NOT NULL,
+    created_at DATE NOT NULL,
+    CONSTRAINT PK_HISTORIAL_ACCIONES PRIMARY KEY (id_historial_acciones),
+    CONSTRAINT FK_HISTORIAL_ACCIONES_USUARIO FOREIGN KEY (documento_usuario) REFERENCES usuarios (documento) ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT FK_HISTORIAL_ACCIONES_MODULO FOREIGN KEY (id_modulo) REFERENCES modulos (id_modulo) ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT FK_HISTORIAL_ACCIONES_PERMISO FOREIGN KEY (id_permiso) REFERENCES permisos (id_permiso) ON DELETE RESTRICT ON UPDATE CASCADE
+);

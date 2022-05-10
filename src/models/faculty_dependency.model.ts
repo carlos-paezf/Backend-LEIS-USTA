@@ -30,6 +30,10 @@ FacultadDependencia.init(
             allowNull: false,
             unique: true
         },
+        status: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false
+        },
         created_at: {
             type: DataTypes.DATE,
             allowNull: false

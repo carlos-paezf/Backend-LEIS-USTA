@@ -35,6 +35,10 @@ Roles.init(
             type: DataTypes.TEXT,
             allowNull: true
         },
+        status: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false
+        },
         created_at: {
             type: DataTypes.DATE,
             allowNull: false

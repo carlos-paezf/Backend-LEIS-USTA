@@ -30,7 +30,7 @@ CREATE UNIQUE INDEX idx_permisos_permiso_nombre ON permisos (permiso_nombre);
 CREATE TABLE roles (
     id_rol SERIAL NOT NULL,
     rol_nombre VARCHAR(45) NOT NULL,
-    rol_descripcion text NOT NULL,
+    rol_descripcion text,
     status BOOLEAN NOT NULL,
     created_at DATE NOT NULL,
     updated_at DATE NOT NULL,
@@ -53,6 +53,15 @@ CREATE TABLE roles_modulos_permisos (
     CONSTRAINT FK_ROLES_MODULOS_PERMISOS_PERMISOS FOREIGN KEY (id_permiso) REFERENCES permisos (id_permiso) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 /* ---------------------------------------------------------- */
+/* Tabla: Estado */
+/* ---------------------------------------------------------- */
+CREATE TABLE estados (
+    id_estado SERIAL NOT NULL,
+    nombre_estado VARCHAR(50) NOT NULL,
+    descripcion TEXT NULL,
+    CONSTRAINT PK_ESTADO PRIMARY KEY (id_estado)
+);
+/* ---------------------------------------------------------- */
 /* Tabla: Usuarios */
 /* ---------------------------------------------------------- */
 CREATE TABLE usuarios (
@@ -65,12 +74,13 @@ CREATE TABLE usuarios (
     email VARCHAR(255) NOT NULL,
     numero_contacto VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    status INT NOT NULL,
+    id_estado INT NOT NULL,
     enabled BOOLEAN NOT NULL,
     created_at DATE NOT NULL,
     updated_at DATE NOT NULL,
     CONSTRAINT PK_USUARIOS PRIMARY KEY (documento),
     CONSTRAINT FK_USUARIOS_ROLES FOREIGN KEY (id_rol) REFERENCES roles (id_rol) ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT FK_USUARIOS_ESTADO FOREIGN KEY (id_estado) REFERENCES estados (id_estado) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 CREATE UNIQUE INDEX idx_usuarios_documento ON usuarios (documento);
 CREATE UNIQUE INDEX idx_usuarios_username ON usuarios (username);

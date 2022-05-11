@@ -3,13 +3,18 @@ INSERT INTO roles (rol_nombre, rol_descripcion, status, created_at, updated_at) 
 INSERT INTO roles (rol_nombre, rol_descripcion, status, created_at, updated_at) VALUES ('laboratorista', 'Rol con la mayoría de privilegios', TRUE, '2022-04-11', '2022-04-11');
 
 
-INSERT INTO usuarios (documento, id_rol, tipo_documento, nombres, apellidos, username, email, numero_contacto, password, status, enabled, created_at, updated_at) VALUES (1, 1, 'Programador', 'Carlos David', 'Páez Ferreira', 'carlos-paezf', 'carlos.paezf@usantoto.edu.co', 'carlos.paezf@usantoto.edu.co', 'admin_password', 1, TRUE, '2022-05-04', '2022-05-04');
-INSERT INTO usuarios (documento, id_rol, tipo_documento, nombres, apellidos, username, email, numero_contacto, password, status, enabled, created_at, updated_at) VALUES (2, 3, 'Test', 'Lab Test', 'Prueba', 'lab-test', 'test@test.com', '1234567', 'test_password', 1, TRUE, '2022-05-04', '2022-05-04');
+INSERT INTO usuarios (documento, id_rol, tipo_documento, nombres, apellidos, username, email, numero_contacto, password, estado, enabled, created_at, updated_at) VALUES (1, 1, 'Programador', 'Carlos David', 'Páez Ferreira', 'carlos-paezf', 'carlos.paezf@usantoto.edu.co', 'carlos.paezf@usantoto.edu.co', 'admin_password', 1, TRUE, '2022-05-04', '2022-05-04');
+INSERT INTO usuarios (documento, id_rol, tipo_documento, nombres, apellidos, username, email, numero_contacto, password, estado, enabled, created_at, updated_at) VALUES (2, 3, 'Test', 'Lab Test', 'Prueba', 'lab-test', 'test@test.com', '1234567', 'test_password', 1, TRUE, '2022-05-04', '2022-05-04');
 
--- Status 1: Al día
--- Status 2: En mora
--- Status 3: En préstamo
--- Status 4: A paz y Salvo
+-- Estado 1: Al día
+-- Estado 2: En mora
+-- Estado 3: En préstamo
+-- Estado 4: A paz y Salvo
+
+INSERT INTO estados (nombre_estado, descripcion) VALUES ('Al día', 'No tiene ninguna deuda');
+INSERT INTO estados (nombre_estado, descripcion) VALUES ('En mora', 'Esta atrado en la entrega de un equipo o experimento');
+INSERT INTO estados (nombre_estado, descripcion) VALUES ('En préstamo', 'Poseé elementos en préstamos dentro del tiempo establecido');
+INSERT INTO estados (nombre_estado, descripcion) VALUES ('A paz y salvo', 'Ha solucionado su estado');
 
 
 INSERT INTO permisos (permiso_nombre, permiso_descripcion, status, created_at, updated_at) VALUES ('Crear', 'Permite la inserción de datos', TRUE, '2022-04-13', '2022-04-13');

@@ -11,6 +11,6 @@ export enum USERS_FIELDS {
     EMAIL = "email",
     CONTACT_NUMBER = "numero_contacto",
     PASSWORD = "password",
-    STATUS = "status",
+    STATUS = "id_estado",
     ENABLED = "enabled",
 }

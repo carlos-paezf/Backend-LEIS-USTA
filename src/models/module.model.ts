@@ -12,6 +12,7 @@ export class Modulos extends Model {
     id_modulo!: number
     modulo_nombre!: string
     modulo_descripcion!: string
+    status!: boolean
     created_at!: Date
     updated_at!: Date
 }

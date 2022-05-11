@@ -12,6 +12,7 @@ export class Permisos extends Model {
     id_permiso!: number
     permiso_nombre!: string
     permiso_descripcion!: string
+    status!: boolean
     created_at!: Date
     updated_at!: Date
 }

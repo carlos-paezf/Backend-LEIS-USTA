@@ -12,6 +12,7 @@ export class Roles extends Model {
     id_rol!: number
     rol_nombre!: string
     rol_descripcion!: string
+    status!: boolean
     created_at!: Date
     updated_at!: Date
 }

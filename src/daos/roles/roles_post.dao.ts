@@ -4,6 +4,7 @@ import { MODULES_FIELDS, PERMISSIONS_FIELDS, ROLES_FIELDS, ROLE_MODULE_PERMISSIO
 import { createdStatus, internalServerErrorStatus } from "../status_responses";
 import { ParamsRoleDAO_POST } from "../../helpers/interfaces";
 import { createRolesModulesPermissions } from "./roles-modules-permissions.dao";
+import { getCurrentDate } from "../../helpers";
 
 
 /** 
@@ -28,8 +29,9 @@ export class RolesDAO_POST {
             const role = await Roles.create({
                 rol_nombre,
                 rol_descripcion,
-                created_at: new Date(),
-                updated_at: new Date()
+                status: true,
+                created_at: getCurrentDate(),
+                updated_at: getCurrentDate()
             }, {
                 returning: [
                     ROLES_FIELDS.ID, ROLES_FIELDS.NAME, ROLES_FIELDS.DESCRIPTION
@@ -38,7 +40,7 @@ export class RolesDAO_POST {
 
             await createRolesModulesPermissions(role.id_rol, permisos)
 
-            const { rows } = await RolesModulosPermisos.findAndCountAll({
+            const { count, rows } = await RolesModulosPermisos.findAndCountAll({
                 attributes: [ ROLE_MODULE_PERMISSION_FIELDS.PERMISSION],
                 where: {
                     'id_rol': +role.id_rol
@@ -55,7 +57,7 @@ export class RolesDAO_POST {
                 ]
             })
 
-            return createdStatus({ role, permissions: rows }, res)
+            return createdStatus({ role, countPermissions: count, permissions: rows }, res)
         } catch (error) {
             return internalServerErrorStatus('Error un RolesDAO_POST: ', error, res)
         }

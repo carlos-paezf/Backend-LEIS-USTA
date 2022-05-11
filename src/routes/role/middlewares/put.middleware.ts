@@ -18,7 +18,7 @@ export class RoleMiddlewarePUT {
             ROLES_FIELDS.NAME, ROLES_FIELDS.DESCRIPTION, ROLES_FIELDS.PERMISSIONS
         ], 'No se pueden enviar campos vacíos').optional().not().isEmpty(),
         body(ROLES_FIELDS.PERMISSIONS, 'Debe asignar por lo menos un permiso').not().isEmpty(),
-        body(ROLES_FIELDS.NAME).custom(roleNameAlreadyUsed),
+        // body(ROLES_FIELDS.NAME).custom(roleNameAlreadyUsed),
         body(ROLES_FIELDS.PERMISSIONS).custom(moduleAndPermissionExists),
         validateFieldsErrors
     ]

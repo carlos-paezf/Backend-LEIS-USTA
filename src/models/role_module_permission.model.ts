@@ -15,6 +15,9 @@ export class RolesModulosPermisos extends Model{
     id_rol!: number
     id_modulo!: number
     id_permiso!: number
+    status!: boolean
+    created_at!: Date
+    updated_at!: Date
 }
 
 

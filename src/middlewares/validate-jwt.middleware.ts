@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import { NextFunction, Request, Response } from "express";
 import { verify } from 'jsonwebtoken';
-import { internalServerErrorStatus, unauthorizedStatus } from '../daos/status_responses';
+import { internalServerErrorStatus, invalidExpiredJWTStatus } from '../daos/status_responses';
 
 
 /**
@@ -18,11 +18,11 @@ import { internalServerErrorStatus, unauthorizedStatus } from '../daos/status_re
 export const validateJWT = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { authorization } = req.headers
-        if (!authorization) return unauthorizedStatus('Se debe proveer un Token de acceso', res)
+        if (!authorization) return invalidExpiredJWTStatus('Se debe proveer un Token de acceso', res)
 
         try {
             const bearer = authorization.slice(0, 6)
-            if (bearer !== 'Bearer') return unauthorizedStatus('Invalid Authorization', res)
+            if (bearer !== 'Bearer') return invalidExpiredJWTStatus('Invalid Authorization', res)
 
             const token = authorization.split(' ').at(-1) as string
             const SECRET_KEY = process.env.SECRET_KEY_JWT
@@ -34,7 +34,7 @@ export const validateJWT = async (req: Request, res: Response, next: NextFunctio
 
             next()
         } catch (error) {
-            return unauthorizedStatus('JWT invalido', res)
+            return invalidExpiredJWTStatus('JWT invalido', res)
         }
     } catch (error) {
         return internalServerErrorStatus('Error in validateJWT: ', error, res)

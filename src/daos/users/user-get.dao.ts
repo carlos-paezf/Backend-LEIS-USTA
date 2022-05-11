@@ -1,8 +1,6 @@
 import { Response } from "express"
-import { ConnectionDB } from '../../config';
-import { Roles, Usuarios } from "../../models";
-import { ROLES_FIELDS, USERS_FIELDS } from "../../helpers/mapping";
-import { USERS_SQL } from "../../repositories";
+import { Estados, Roles, Usuarios } from "../../models";
+import { ROLES_FIELDS, STATUS_FIELDS, USERS_FIELDS } from "../../helpers/mapping";
 import { badRequestStatus, internalServerErrorStatus, okStatus } from "../status_responses";
 import { ParamsUserDAO_GETAll, ParamsUserDAO_GETByID } from "../../helpers/interfaces";
 
@@ -30,14 +28,17 @@ export class UsersDAO_GET {
                     USERS_FIELDS.DOCUMENT, USERS_FIELDS.TYPE_DOCUMENT,
                     USERS_FIELDS.FIRST_NAME, USERS_FIELDS.LAST_NAME, USERS_FIELDS.USERNAME,
                     USERS_FIELDS.EMAIL, USERS_FIELDS.CONTACT_NUMBER, USERS_FIELDS.ENABLED,
-                    [ConnectionDB.sequelize.literal(USERS_SQL.CASE_STATUS), USERS_FIELDS.STATUS],
-                    USERS_FIELDS.ROLE
+                    USERS_FIELDS.STATUS, USERS_FIELDS.ROLE
                 ],
                 where: (!all) ? { 'enabled': true } : {},
                 include: [
                     {
                         model: Roles,
                         attributes: [ROLES_FIELDS.NAME, ROLES_FIELDS.DESCRIPTION]
+                    },
+                    {
+                        model: Estados,
+                        attributes: [STATUS_FIELDS.NAME, STATUS_FIELDS.DESCRIPTION]
                     }
                 ]
             })
@@ -65,13 +66,16 @@ export class UsersDAO_GET {
                     USERS_FIELDS.DOCUMENT, USERS_FIELDS.TYPE_DOCUMENT,
                     USERS_FIELDS.FIRST_NAME, USERS_FIELDS.LAST_NAME, USERS_FIELDS.USERNAME,
                     USERS_FIELDS.EMAIL, USERS_FIELDS.CONTACT_NUMBER, USERS_FIELDS.ENABLED,
-                    [ConnectionDB.sequelize.literal(USERS_SQL.CASE_STATUS), USERS_FIELDS.STATUS],
-                    USERS_FIELDS.ROLE
+                    USERS_FIELDS.STATUS, USERS_FIELDS.ROLE
                 ],
                 include: [
                     {
                         model: Roles,
                         attributes: [ROLES_FIELDS.NAME, ROLES_FIELDS.DESCRIPTION]
+                    },
+                    {
+                        model: Estados,
+                        attributes: [STATUS_FIELDS.NAME, STATUS_FIELDS.DESCRIPTION]
                     }
                 ]
             })

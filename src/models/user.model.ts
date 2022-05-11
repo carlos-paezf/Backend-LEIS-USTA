@@ -1,6 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 import { ConnectionDB } from '../config';
 import { Roles } from './role.model';
+import { Estados } from './status.model';
 
 
 /**
@@ -21,7 +22,7 @@ export class Usuarios extends Model {
     email!: string
     numero_contacto!: string
     password!: string
-    status!: number
+    id_estado!: number
     enabled!: boolean
     created_at!: Date
     updated_at!: Date
@@ -70,9 +71,9 @@ Usuarios.init(
             type: DataTypes.STRING,
             allowNull: false
         },
-        status: {
+        id_estado: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: false
         },
         enabled: {
             type: DataTypes.BOOLEAN,
@@ -100,4 +101,9 @@ Usuarios.init(
 Usuarios.belongsTo(Roles, {
     foreignKey: 'id_rol',
     onDelete: 'RESTRICT',
+})
+
+Usuarios.belongsTo(Estados, {
+    foreignKey: 'id_estado',
+    onDelete: 'RESTRICT'
 })

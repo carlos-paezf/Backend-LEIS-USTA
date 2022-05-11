@@ -4,6 +4,7 @@ import { Usuarios } from "../../models";
 import { USERS_FIELDS } from "../../helpers/mapping";
 import { createdStatus, internalServerErrorStatus } from "../status_responses";
 import { ParamsUserDAO_POST } from "../../helpers/interfaces";
+import { getCurrentDate } from "../../helpers";
 
 
 /**
@@ -23,18 +24,18 @@ export class UserDAO_POST {
             const { password, ...rest } = params
 
             const salt = genSaltSync()
-            
+
             const user = await Usuarios.create({
                 ...rest,
                 'password': hashSync(password, salt),
                 id_rol: 3,
                 status: 1,
                 enabled: 1,
-                created_at: new Date(),
-                updated_at: new Date()
+                created_at: getCurrentDate(),
+                updated_at: getCurrentDate()
             }, {
                 returning: [
-                    USERS_FIELDS.DOCUMENT, USERS_FIELDS.TYPE_DOCUMENT, 
+                    USERS_FIELDS.DOCUMENT, USERS_FIELDS.TYPE_DOCUMENT,
                     USERS_FIELDS.FIRST_NAME, USERS_FIELDS.LAST_NAME, USERS_FIELDS.USERNAME,
                     USERS_FIELDS.EMAIL, USERS_FIELDS.CONTACT_NUMBER
                 ]

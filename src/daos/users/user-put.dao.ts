@@ -4,6 +4,7 @@ import { Usuarios } from "../../models";
 import { USERS_FIELDS } from "../../helpers/mapping";
 import { badRequestStatus, internalServerErrorStatus, okStatus } from "../status_responses";
 import { ParamsUserDAO_PUTEnable, ParamsUserDAO_PUTUpdate } from "../../helpers/interfaces";
+import { getCurrentDate } from "../../helpers";
 
 
 /**
@@ -22,20 +23,27 @@ export class UserDAO_PUT {
     protected static updateUserByDocument = async (params: ParamsUserDAO_PUTUpdate, res: Response): Promise<unknown> => {
         try {
             const { document, password, ...rest } = params
-            
+
             const user = await Usuarios.findByPk(document, {
                 attributes: [USERS_FIELDS.DOCUMENT]
             })
 
             if (!user) return badRequestStatus(`No existe un usuario con el documento ${document}`, res)
             if (user.enabled === false) return badRequestStatus(`El usuario con el documento ${document} se encuentra inhabilitado`, res)
-            
+
             if (password) {
                 const salt = genSaltSync()
-                await user.update({ ...rest, 'password': hashSync(password, salt), 'updated_at': new Date() })
+                await user.update({ 
+                    ...rest, 
+                    'password': hashSync(password, salt), 
+                    'updated_at': getCurrentDate()
+                })
             }
 
-            await user.update({ ...rest, 'updated_at': new Date() })
+            await user.update({ 
+                ...rest, 
+                'updated_at': getCurrentDate() 
+            })
 
             return okStatus({ msg: `El usuario con el documento ${document}, ha sido actualizado correctamente`, user }, res)
         } catch (error) {
@@ -62,7 +70,10 @@ export class UserDAO_PUT {
             if (!user) return badRequestStatus(`No existe un usuario con el documento ${document}`, res)
             if (user.enabled) return badRequestStatus(`El usuario con el documento ${document} ya se encuentra habilitado`, res)
 
-            await user.update({ enabled: 1, 'updated_at': new Date() })
+            await user.update({ 
+                enabled: 1, 
+                'updated_at': getCurrentDate() 
+            })
 
             return okStatus({ msg: `El usuario con el documento ${document}, ha sido habilitado correctamente`, user }, res)
         } catch (error) {

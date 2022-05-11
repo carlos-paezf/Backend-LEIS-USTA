@@ -3,6 +3,7 @@ import { Usuarios } from "../../models";
 import { USERS_FIELDS } from "../../helpers/mapping";
 import { badRequestStatus, internalServerErrorStatus, okStatus } from "../status_responses";
 import { ParamsUserDAO_DELETEDestroy, ParamsUserDAO_DELETEDisable } from "../../helpers/interfaces";
+import { getCurrentDate } from "../../helpers";
 
 
 /**
@@ -30,7 +31,10 @@ export class UserDAO_DELETE {
 
             if (!user.enabled) return badRequestStatus(`El usuario con el documento ${document} se encuentra inhabilitado`, res)
 
-            await user.update({ enabled: 0, 'updated_at': new Date() })
+            await user.update({ 
+                enabled: 0, 
+                'updated_at': getCurrentDate()
+            })
 
             return okStatus({ msg: `El usuario con el documento ${document}, ha sido inhabilitado correctamente`, user }, res)
         } catch (error) {

@@ -11,6 +11,7 @@ import { ConnectionDB } from "../config";
 export class FacultadDependencia extends Model {
     id_facultad_dependencia!: number
     nombre_facultad_dependencia!: string
+    status!: boolean
     created_at!: Date
     updated_at!: Date
 }

@@ -25,10 +25,22 @@ class FacultyDependencyRouter {
      * A function that is called when the class is instantiated. 
      */
     private config = (): void => {
-        this.facultyDependencyRouter.get('/', FacultyDependencyMiddlewareGET.GET_ALL, facultyDependencyControllerGet.getAllFacultiesDependencies)
-        this.facultyDependencyRouter.get('/:facultyDependencyId', FacultyDependencyMiddlewareGET.GET_FACULTY_DEPENDENCY, facultyDependencyControllerGet.getFacultyDependencyById)
+        this.facultyDependencyRouter.get(
+            '/',
+            FacultyDependencyMiddlewareGET.GET_ALL,
+            facultyDependencyControllerGet.getAllFacultiesDependencies
+        )
+        this.facultyDependencyRouter.get(
+            '/:facultyDependencyId',
+            FacultyDependencyMiddlewareGET.GET_FACULTY_DEPENDENCY,
+            facultyDependencyControllerGet.getFacultyDependencyById
+        )
 
-        this.facultyDependencyRouter.post('/create', FacultyDependencyMiddlewarePOST.POST_CREATE, facultyDependencyControllerPost.postFacultyDependency)
+        this.facultyDependencyRouter.post(
+            '/create',
+            FacultyDependencyMiddlewarePOST.POST_CREATE,
+            facultyDependencyControllerPost.postFacultyDependency
+        )
     }
 }
 

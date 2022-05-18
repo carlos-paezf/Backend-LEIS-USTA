@@ -19,3 +19,12 @@ export interface ParamsFacultyDependencyDAO_GETByID {
 export interface ParamsFacultyDependencyDAO_POST {
     nombre_facultad_dependencia: string
 }
+
+
+/**
+ * @author Carlos Páez
+ */
+export interface ParamsFacultyDependencyDAO_PUT {
+    facultyDependencyId: number | string
+    nombre_facultad_dependencia: string
+}

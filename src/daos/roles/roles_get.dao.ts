@@ -29,7 +29,8 @@ export class RolesDAO_GET {
                     ROLES_FIELDS.ID,
                     ROLES_FIELDS.NAME,
                     ROLES_FIELDS.DESCRIPTION
-                ]
+                ],
+                where: { status: true }
             })
 
             return okStatus({ from: offset, limit, count, data: rows }, res)
@@ -53,9 +54,11 @@ export class RolesDAO_GET {
             const { roleId: role_id } = params
 
             const role = await Roles.findByPk(role_id, {
-                attributes: [ROLES_FIELDS.ID, ROLES_FIELDS.NAME]
+                attributes: [ROLES_FIELDS.ID, ROLES_FIELDS.NAME, ROLES_FIELDS.STATUS]
             })
             if (!role) return badRequestStatus(`No hay ningún rol con el id ${role_id}`, res)
+
+            if (!role.status) return badRequestStatus(`El rol '${role.rol_nombre}' se encuentra deshabilitado`, res)
 
             const { count: countPermissions, rows } = await RolesModulosPermisos.findAndCountAll({
                 attributes: [

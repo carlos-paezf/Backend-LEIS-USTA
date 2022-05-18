@@ -12,6 +12,7 @@ export class Modulos extends Model {
     id_modulo!: number
     modulo_nombre!: string
     modulo_descripcion!: string
+    status!: boolean
     created_at!: Date
     updated_at!: Date
 }
@@ -34,6 +35,10 @@ Modulos.init(
         modulo_descripcion:  {
             type: DataTypes.TEXT,
             allowNull: true
+        },
+        status: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false
         },
         created_at: {
             type: DataTypes.DATE,

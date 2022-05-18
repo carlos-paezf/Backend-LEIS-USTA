@@ -5,6 +5,7 @@ CREATE TABLE modulos (
     id_modulo SERIAL NOT NULL,
     modulo_nombre VARCHAR(45) NOT NULL,
     modulo_descripcion TEXT NOT NULL,
+    status BOOLEAN NOT NULL,
     created_at DATE NOT NULL,
     updated_at DATE NOT NULL,
     CONSTRAINT PK_MODULOS PRIMARY KEY (id_modulo)
@@ -17,6 +18,7 @@ CREATE TABLE permisos (
     id_permiso SERIAL NOT NULL,
     permiso_nombre VARCHAR(45) NOT NULL,
     permiso_descripcion text NOT NULL,
+    status BOOLEAN NOT NULL,
     created_at DATE NOT NULL,
     updated_at DATE NOT NULL,
     CONSTRAINT PK_PERMISOS PRIMARY KEY (id_permiso)
@@ -28,7 +30,8 @@ CREATE UNIQUE INDEX idx_permisos_permiso_nombre ON permisos (permiso_nombre);
 CREATE TABLE roles (
     id_rol SERIAL NOT NULL,
     rol_nombre VARCHAR(45) NOT NULL,
-    rol_descripcion text NOT NULL,
+    rol_descripcion text,
+    status BOOLEAN NOT NULL,
     created_at DATE NOT NULL,
     updated_at DATE NOT NULL,
     CONSTRAINT PK_ROLES PRIMARY KEY (id_rol)
@@ -41,10 +44,22 @@ CREATE TABLE roles_modulos_permisos (
     id_rol INT2 NOT NULL,
     id_modulo INT2 NOT NULL,
     id_permiso INT2 NOT NULL,
+    status BOOLEAN NOT NULL,
+    created_at DATE NOT NULL,
+    updated_at DATE NOT NULL,
     CONSTRAINT PK_ROLES_MODULOS_PERMISOS PRIMARY KEY (id_rol, id_modulo, id_permiso),
     CONSTRAINT FK_ROLES_MODULOS_PERMISOS_ROLES FOREIGN KEY (id_rol) REFERENCES roles (id_rol) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT FK_ROLES_MODULOS_PERMISOS_MODULOS FOREIGN KEY (id_modulo) REFERENCES modulos (id_modulo) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT FK_ROLES_MODULOS_PERMISOS_PERMISOS FOREIGN KEY (id_permiso) REFERENCES permisos (id_permiso) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+/* ---------------------------------------------------------- */
+/* Tabla: Estado */
+/* ---------------------------------------------------------- */
+CREATE TABLE estados (
+    id_estado SERIAL NOT NULL,
+    nombre_estado VARCHAR(50) NOT NULL,
+    descripcion TEXT NULL,
+    CONSTRAINT PK_ESTADO PRIMARY KEY (id_estado)
 );
 /* ---------------------------------------------------------- */
 /* Tabla: Usuarios */
@@ -59,12 +74,13 @@ CREATE TABLE usuarios (
     email VARCHAR(255) NOT NULL,
     numero_contacto VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    status INT NOT NULL,
+    id_estado INT NOT NULL,
     enabled BOOLEAN NOT NULL,
     created_at DATE NOT NULL,
     updated_at DATE NOT NULL,
     CONSTRAINT PK_USUARIOS PRIMARY KEY (documento),
     CONSTRAINT FK_USUARIOS_ROLES FOREIGN KEY (id_rol) REFERENCES roles (id_rol) ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT FK_USUARIOS_ESTADO FOREIGN KEY (id_estado) REFERENCES estados (id_estado) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 CREATE UNIQUE INDEX idx_usuarios_documento ON usuarios (documento);
 CREATE UNIQUE INDEX idx_usuarios_username ON usuarios (username);
@@ -75,6 +91,7 @@ CREATE UNIQUE INDEX idx_usuarios_email ON usuarios (email);
 CREATE TABLE facultad_dependencia (
     id_facultad_dependencia SERIAL NOT NULL,
     nombre_facultad_dependencia VARCHAR(45) NOT NULL,
+    status BOOLEAN NOT NULL,
     created_at DATE NOT NULL,
     updated_at DATE NOT NULL,
     CONSTRAINT PK_FACULTAD_DEPENDENCIA PRIMARY KEY (id_facultad_dependencia)
@@ -87,6 +104,9 @@ CREATE TABLE facultad_usuarios (
     id_facultad_usuario SERIAL NOT NULL,
     documento_usuario INT NOT NULL,
     id_facultad INT NOT NULL,
+    status BOOLEAN NOT NULL,
+    created_at DATE NOT NULL,
+    updated_at DATE NOT NULL,
     CONSTRAINT PK_FACULTAD_USUARIOS PRIMARY KEY (id_facultad_usuario),
     CONSTRAINT FK_FACULTAD_USUARIOS_USUARIOS FOREIGN KEY (documento_usuario) REFERENCES usuarios (documento) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT FK_FACULTAD_USUARIOS_FACULTAD FOREIGN KEY (id_facultad) REFERENCES facultad_dependencia (id_facultad_dependencia) ON DELETE RESTRICT ON UPDATE CASCADE
@@ -101,6 +121,9 @@ CREATE TABLE multas (
     creacion_multa DATE NOT NULL,
     vencimiento_multa DATE NOT NULL,
     descripcion_multa TEXT NOT NULL,
+    status BOOLEAN NOT NULL,
+    created_at DATE NOT NULL,
+    updated_at DATE NOT NULL,
     CONSTRAINT PK_MULTAS PRIMARY KEY (id_multa)
 );
 /* ---------------------------------------------------------- */
@@ -110,6 +133,9 @@ CREATE TABLE multas_usuarios (
     id_multas_usuarios SERIAL NOT NULL,
     documento_usuario INT NOT NULL,
     id_multa INT NOT NULL,
+    status BOOLEAN NOT NULL,
+    created_at DATE NOT NULL,
+    updated_at DATE NOT NULL,
     CONSTRAINT PK_MULTAS_USUARIOS PRIMARY KEY (id_multas_usuarios),
     CONSTRAINT FK_MULTAS_USUARIOS_USUARIOS FOREIGN KEY (documento_usuario) REFERENCES usuarios (documento) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT FK_MULTAS_USUARIOS_MULTAS FOREIGN KEY (id_multa) REFERENCES multas (id_multa) ON DELETE RESTRICT ON UPDATE CASCADE
@@ -120,6 +146,9 @@ CREATE TABLE multas_usuarios (
 CREATE TABLE tipo_mantenimiento (
     id_tipo_mantenimiento SERIAL NOT NULL,
     nombre_tipo_mantenimiento VARCHAR(45) NOT NULL,
+    status BOOLEAN NOT NULL,
+    created_at DATE NOT NULL,
+    updated_at DATE NOT NULL,
     CONSTRAINT PK_TIPO_MANTENIMIENTO PRIMARY KEY (id_tipo_mantenimiento)
 );
 /* ---------------------------------------------------------- */
@@ -134,6 +163,9 @@ CREATE TABLE historial_mantenimientos (
     n_reporte INT NOT NULL,
     documento_usuario INT NOT NULL,
     tipo_mantenimiento INT NOT NULL,
+    status BOOLEAN NOT NULL,
+    created_at DATE NOT NULL,
+    updated_at DATE NOT NULL,
     CONSTRAINT PK_HISTORIAL_MANTENIMIENTOS PRIMARY KEY (id_historial_mantenimiento),
     CONSTRAINT FK_HISTORIAL_MANTENIMIENTOS_USUARIOS FOREIGN KEY (documento_usuario) REFERENCES usuarios (documento) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT FK_HISTORIAL_MANTENIMIENTOS_TIPO_MANTENIMIENTO FOREIGN KEY (tipo_mantenimiento) REFERENCES tipo_mantenimiento (id_tipo_mantenimiento) ON DELETE RESTRICT ON UPDATE CASCADE
@@ -146,6 +178,9 @@ CREATE TABLE documentacion_tecnica (
     tipo_manual VARCHAR(45) NOT NULL,
     manual VARCHAR(250) NOT NULL,
     codigo VARCHAR(45),
+    status BOOLEAN NOT NULL,
+    created_at DATE NOT NULL,
+    updated_at DATE NOT NULL,
     CONSTRAINT PK_DOCUMENTACION_TECNICA PRIMARY KEY (id_tipo_manual)
 );
 /* ---------------------------------------------------------- */
@@ -158,6 +193,9 @@ CREATE TABLE software_funcionamiento (
     version VARCHAR(45) NOT NULL,
     fecha_vencimiento DATE NOT NULL,
     descripcion_software TEXT NOT NULL,
+    status BOOLEAN NOT NULL,
+    created_at DATE NOT NULL,
+    updated_at DATE NOT NULL,
     CONSTRAINT PK_SOFTWARE_FUNCIONAMIENTO PRIMARY KEY (id_software)
 );
 /* ---------------------------------------------------------- */
@@ -169,6 +207,9 @@ CREATE TABLE partes_moviles_accesorios (
     cantidad INT NOT NULL,
     marca VARCHAR(45) NOT NULL,
     n_inventario VARCHAR(45) NOT NULL,
+    status BOOLEAN NOT NULL,
+    created_at DATE NOT NULL,
+    updated_at DATE NOT NULL,
     CONSTRAINT PK_PARTES_MOVILES_ACCESORIOS PRIMARY KEY (id_partes_moviles_accesorios)
 );
 /* ---------------------------------------------------------- */
@@ -191,6 +232,9 @@ CREATE TABLE caracteristicas_tecnicas (
     id_tipo_manual INT,
     id_software_funcionamiento INT,
     id_partes_moviles_accesorios INT,
+    status BOOLEAN NOT NULL,
+    created_at DATE NOT NULL,
+    updated_at DATE NOT NULL,
     CONSTRAINT PK_CARACTERISTICAS_TECNICAS PRIMARY KEY (id_caracteristicas_tecnicas),
     CONSTRAINT FK_CARACTERISTICAS_TECNICAS_TIPO_MANUAL FOREIGN KEY (id_tipo_manual) REFERENCES documentacion_tecnica (id_tipo_manual) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT FK_CARACTERISTICAS_TECNICAS_SOFTWARE_FUNCIONAMIENTO FOREIGN KEY (id_software_funcionamiento) REFERENCES software_funcionamiento (id_software) ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -202,6 +246,9 @@ CREATE TABLE caracteristicas_tecnicas (
 CREATE TABLE ubicaciones (
     id_ubicacion SERIAL NOT NULL,
     nombre_direccion VARCHAR(250) NOT NULL,
+    status BOOLEAN NOT NULL,
+    created_at DATE NOT NULL,
+    updated_at DATE NOT NULL,
     CONSTRAINT PK_UBICACIONES PRIMARY KEY (id_ubicacion)
 );
 /* ---------------------------------------------------------- */
@@ -214,6 +261,9 @@ CREATE TABLE laboratorios (
     cantidad_equipos INT NOT NULL,
     descripcion TEXT NOT NULL,
     id_ubicacion INT NOT NULL,
+    status BOOLEAN NOT NULL,
+    created_at DATE NOT NULL,
+    updated_at DATE NOT NULL,
     CONSTRAINT PK_LABORATORIOS PRIMARY KEY (id_laboratorio),
     CONSTRAINT FK_LABORATORIOS_UBICACION FOREIGN KEY (id_ubicacion) REFERENCES ubicaciones (id_ubicacion) ON DELETE RESTRICT ON UPDATE CASCADE
 );
@@ -223,6 +273,9 @@ CREATE TABLE laboratorios (
 CREATE TABLE requerimiento_mantenimiento (
     id_requerimiento_mantenimiento SERIAL NOT NULL,
     periodo DATE NOT NULL,
+    status BOOLEAN NOT NULL,
+    created_at DATE NOT NULL,
+    updated_at DATE NOT NULL,
     CONSTRAINT PK_REQUERIMIENTO_MANTENIMIENTO PRIMARY KEY (id_requerimiento_mantenimiento)
 );
 /* ---------------------------------------------------------- */
@@ -234,6 +287,9 @@ CREATE TABLE proveedores (
     telefono VARCHAR(45) NOT NULL,
     email VARCHAR(250),
     ciudad VARCHAR(100) NOT NULL,
+    status BOOLEAN NOT NULL,
+    created_at DATE NOT NULL,
+    updated_at DATE NOT NULL,
     CONSTRAINT PK_PROVEEDORES PRIMARY KEY (id_proveedor)
 );
 /* ---------------------------------------------------------- */
@@ -242,6 +298,9 @@ CREATE TABLE proveedores (
 CREATE TABLE tipo_equipo (
     id_tipo_equipo SERIAL NOT NULL,
     tipo VARCHAR(45) NOT NULL,
+    status BOOLEAN NOT NULL,
+    created_at DATE NOT NULL,
+    updated_at DATE NOT NULL,
     CONSTRAINT PK_TIPO_EQUIPO PRIMARY KEY (id_tipo_equipo)
 );
 /* ---------------------------------------------------------- */
@@ -269,6 +328,9 @@ CREATE TABLE equipos (
     id_historial_mantenimiento INT,
     id_caracteristicas_tecnicas INT NOT NULL,
     id_laboratorio INT NOT NULL,
+    status BOOLEAN NOT NULL,
+    created_at DATE NOT NULL,
+    updated_at DATE NOT NULL,
     CONSTRAINT PK_EQUIPOS PRIMARY KEY (n_inventario_equipo),
     CONSTRAINT FK_EQUIPOS_REQUERIMIENTO_MANTENIMIENTO FOREIGN KEY (id_requerimiento_mantenimiento) REFERENCES requerimiento_mantenimiento (id_requerimiento_mantenimiento) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT FK_EQUIPOS_PROVEEDOR FOREIGN KEY (id_proveedor) REFERENCES proveedores (id_proveedor) ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -294,6 +356,9 @@ CREATE TABLE uso_laboratorio (
     documento_solicitante INT NOT NULL,
     n_inventario_equipo INT NOT NULL,
     cantidad INT,
+    status BOOLEAN NOT NULL,
+    created_at DATE NOT NULL,
+    updated_at DATE NOT NULL,
     CONSTRAINT PK_USO_LABORATORIO PRIMARY KEY (id_uso_laboratorio),
     CONSTRAINT FK_USO_LABORATORIO_DOCUMENTO_LABORATORISTA FOREIGN KEY (documento_laboratorista) REFERENCES usuarios (documento) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT FK_USO_LABORATORIO_DOCUMENTO_SOLICITANTE FOREIGN KEY (documento_solicitante) REFERENCES usuarios (documento) ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -315,6 +380,9 @@ CREATE TABLE prestamos_equipo (
     documento_laboratorista INT NOT NULL,
     documento_solicitante INT NOT NULL,
     devuelto BOOLEAN NOT NULL,
+    status BOOLEAN NOT NULL,
+    created_at DATE NOT NULL,
+    updated_at DATE NOT NULL,
     CONSTRAINT PK_PRESTAMOS_EQUIPO PRIMARY KEY (id_prestamo),
     CONSTRAINT FK_PRESTAMOS_EQUIPO_EQUIPO FOREIGN KEY (n_inventario_equipo) REFERENCES equipos (n_inventario_equipo) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT FK_PRESTAMOS_EQUIPO_DOCUMENTO_LABORATORISTA FOREIGN KEY (documento_laboratorista) REFERENCES usuarios (documento) ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -327,6 +395,9 @@ CREATE TABLE instrumentos (
     n_inventario_instrumento SERIAL NOT NULL,
     nombre VARCHAR(45) NOT NULL,
     marca VARCHAR(45) NOT NULL,
+    status BOOLEAN NOT NULL,
+    created_at DATE NOT NULL,
+    updated_at DATE NOT NULL,
     CONSTRAINT PK_INSTRUMENTOS PRIMARY KEY (n_inventario_instrumento)
 );
 /* ---------------------------------------------------------- */
@@ -344,6 +415,9 @@ CREATE TABLE herramientas_experimento (
     id_laboratorio INT NOT NULL,
     id_proveedor INT NOT NULL,
     tipo INT NOT NULL,
+    status BOOLEAN NOT NULL,
+    created_at DATE NOT NULL,
+    updated_at DATE NOT NULL,
     CONSTRAINT PK_HERRAMIENTAS_EXPERIMENTO PRIMARY KEY (n_inventario),
     CONSTRAINT FK_HERRAMIENTAS_EXPERIMENTO_LABORATORIO FOREIGN KEY (id_laboratorio) REFERENCES laboratorios (id_laboratorio) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT FK_HERRAMIENTAS_EXPERIMENTO_PROVEEDOR FOREIGN KEY (id_proveedor) REFERENCES proveedores (id_proveedor) ON DELETE RESTRICT ON UPDATE CASCADE
@@ -355,6 +429,9 @@ CREATE TABLE instrumentos_x_experimento (
     id_instrumentos_x_experimento SERIAL NOT NULL,
     n_inventario INT NOT NULL,
     n_inventario_instrumento INT NOT NULL,
+    status BOOLEAN NOT NULL,
+    created_at DATE NOT NULL,
+    updated_at DATE NOT NULL,
     CONSTRAINT PK_INSTRUMENTOS_X_EXPERIMENTO PRIMARY KEY (id_instrumentos_x_experimento),
     CONSTRAINT FK_INSTRUMENTOS_X_EXPERIMENTO_INSTRUMENTO FOREIGN KEY (n_inventario_instrumento) REFERENCES instrumentos (n_inventario_instrumento) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT FK_INSTRUMENTOS_X_EXPERIMENTO_EXPERIMENTO FOREIGN KEY (n_inventario) REFERENCES herramientas_experimento (n_inventario) ON DELETE RESTRICT ON UPDATE CASCADE
@@ -375,8 +452,25 @@ CREATE TABLE prestamos_exp_herr (
     documento_laboratorista INT NOT NULL,
     documento_solicitante INT NOT NULL,
     devuelto BOOLEAN NOT NULL,
+    status BOOLEAN NOT NULL,
+    created_at DATE NOT NULL,
+    updated_at DATE NOT NULL,
     CONSTRAINT PK_PRESTAMOS_EXPERIMENTO_HERRAMIENTA PRIMARY KEY (id_prestamo),
     CONSTRAINT FK_PRESTAMOS_EXPERIMENTO_HERRAMIENTA_HERRAMIENTA_EXPERIMENTO FOREIGN KEY (n_inventario) REFERENCES herramientas_experimento (n_inventario) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT FK_PRESTAMOS_EXPERIMENTO_HERRAMIENTA_DOCUMENTO_LABORATORISTA FOREIGN KEY (documento_laboratorista) REFERENCES usuarios (documento) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT FK_PRESTAMOS_EXPERIMENTO_HERRAMIENTA_DOCUMENTO_SOLICITANTE FOREIGN KEY (documento_solicitante) REFERENCES usuarios (documento) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+/* ---------------------------------------------------------- */
+/* Tabla: Historial de Accicones */
+/* ---------------------------------------------------------- */
+CREATE TABLE historial_acciones (
+    id_historial_acciones SERIAL NOT NULL,
+    documento_usuario INT NOT NULL,
+    id_modulo INT NOT NULL,
+    id_permiso INT NOT NULL,
+    created_at DATE NOT NULL,
+    CONSTRAINT PK_HISTORIAL_ACCIONES PRIMARY KEY (id_historial_acciones),
+    CONSTRAINT FK_HISTORIAL_ACCIONES_USUARIO FOREIGN KEY (documento_usuario) REFERENCES usuarios (documento) ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT FK_HISTORIAL_ACCIONES_MODULO FOREIGN KEY (id_modulo) REFERENCES modulos (id_modulo) ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT FK_HISTORIAL_ACCIONES_PERMISO FOREIGN KEY (id_permiso) REFERENCES permisos (id_permiso) ON DELETE RESTRICT ON UPDATE CASCADE
 );

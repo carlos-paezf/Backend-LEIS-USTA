@@ -12,6 +12,7 @@ export class Roles extends Model {
     id_rol!: number
     rol_nombre!: string
     rol_descripcion!: string
+    status!: boolean
     created_at!: Date
     updated_at!: Date
 }
@@ -34,6 +35,10 @@ Roles.init(
         rol_descripcion:  {
             type: DataTypes.TEXT,
             allowNull: true
+        },
+        status: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false
         },
         created_at: {
             type: DataTypes.DATE,

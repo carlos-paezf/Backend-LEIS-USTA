@@ -1,9 +1,10 @@
 import { Response } from "express"
+import { getCurrentDate } from "../../helpers"
 import { ParamsRoleDAO_PUT } from "../../helpers/interfaces"
 import { ROLES_FIELDS } from "../../helpers/mapping"
-import { Roles, RolesModulosPermisos } from "../../models"
+import { Roles } from "../../models"
 import { badRequestStatus, internalServerErrorStatus, okStatus } from "../status_responses"
-import { createRolesModulesPermissions } from "./roles-modules-permissions.dao"
+import { updateRolesModulesPermissions } from "./roles-modules-permissions.dao"
 
 
 /** 
@@ -13,8 +14,7 @@ import { createRolesModulesPermissions } from "./roles-modules-permissions.dao"
  */
 export class RolesDAO_PUT {
     /**
-     * It receives a roleId, a list of permissions and some other data, it deletes all the permissions
-     * associated with the roleId, then it creates the new permissions and updates the role
+     * It updates a role by id, and it also updates the permissions of that role
      * 
      * @param {ParamsRoleDAO_PUT} params - ParamsRoleDAO_PUT
      * @param {Response} res - Response
@@ -25,17 +25,17 @@ export class RolesDAO_PUT {
             const { roleId, permisos, ...rest } = params
 
             const role = await Roles.findByPk(roleId, {
-                attributes: [ROLES_FIELDS.ID]
+                attributes: [ROLES_FIELDS.ID, ROLES_FIELDS.NAME, ROLES_FIELDS.STATUS]
             })
             if (!role) return badRequestStatus(`No existe un rol con el id ${roleId}`, res)
-            
-            await RolesModulosPermisos.destroy({ where: { 'id_rol': roleId } })
 
-            const rolesModulesPermissions = await createRolesModulesPermissions(Number(roleId), permisos)
+            if (!role.status) return badRequestStatus(`El rol '${role.rol_nombre}' se encuentra deshabilitado`, res)
 
-            await role.update({ ...rest, 'update_at': new Date() })
+            const { countPermissions, rolesModulesPermissions } = await updateRolesModulesPermissions(Number(roleId), permisos)
 
-            return okStatus({ role, rolesModulesPermissions }, res)
+            await role.update({ ...rest, 'update_at': getCurrentDate() })
+
+            return okStatus({ role, countPermissions, rolesModulesPermissions }, res)
         } catch (error) {
             return internalServerErrorStatus('Error in RolesDAO_PUT: ', error, res)
         }

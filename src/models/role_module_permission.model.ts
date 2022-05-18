@@ -15,6 +15,9 @@ export class RolesModulosPermisos extends Model{
     id_rol!: number
     id_modulo!: number
     id_permiso!: number
+    status!: boolean
+    created_at!: Date
+    updated_at!: Date
 }
 
 
@@ -34,6 +37,18 @@ RolesModulosPermisos.init(
         id_permiso: {
             type: DataTypes.DOUBLE,
             primaryKey: true,
+            allowNull: false
+        },
+        status: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false
+        },
+        created_at: {
+            type: DataTypes.DATE,
+            allowNull: false
+        },
+        updated_at: {
+            type: DataTypes.DATE,
             allowNull: false
         }
     },

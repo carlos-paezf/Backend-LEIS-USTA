@@ -24,5 +24,6 @@ export {
 export { 
     ParamsFacultyDependencyDAO_GETAll,
     ParamsFacultyDependencyDAO_GETByID,
-    ParamsFacultyDependencyDAO_POST
+    ParamsFacultyDependencyDAO_POST,
+    ParamsFacultyDependencyDAO_PUT
 } from './faculty_dependency.interface';

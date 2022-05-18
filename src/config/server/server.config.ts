@@ -35,7 +35,7 @@ export class Server {
      */
     constructor() {
         this._app = express()
-        this._port = parseInt(process.env.PORT!, 10) || 8000
+        this._port = Number(process.env.PORT) || 8000
         this.config()
         this.middlewares()
         this.routes()

@@ -1,3 +1,4 @@
+export { Estados } from "./status.model";
 export { FacultadDependencia } from "./faculty_dependency.model";
 export { Modulos } from "./module.model";
 export { Permisos } from './permission.model';

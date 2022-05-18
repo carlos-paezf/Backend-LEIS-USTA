@@ -5,6 +5,9 @@ export interface Permission {
     id_rol: string | number
     id_modulo: string | number
     id_permiso: string | number
+    status: boolean
+    created_at: Date
+    updated_at: Date
 }
 
 

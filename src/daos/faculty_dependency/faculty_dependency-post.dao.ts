@@ -3,6 +3,7 @@ import { ParamsFacultyDependencyDAO_POST } from "../../helpers/interfaces";
 import { FACULTY_DEPENDENCY_FIELDS } from "../../helpers/mapping";
 import { FacultadDependencia } from "../../models";
 import { createdStatus, internalServerErrorStatus } from "../status_responses";
+import { getCurrentDate } from '../../helpers';
 
 
 /** 
@@ -23,8 +24,9 @@ export class FacultyDependencyDAO_POST {
 
             const facultyDependency = await FacultadDependencia.create({
                 nombre_facultad_dependencia,
-                created_at: new Date(),
-                updated_at: new Date()
+                status: true,
+                created_at: getCurrentDate(),
+                updated_at: getCurrentDate()
             }, {
                 returning: [ FACULTY_DEPENDENCY_FIELDS.ID, FACULTY_DEPENDENCY_FIELDS.NAME ]
             })

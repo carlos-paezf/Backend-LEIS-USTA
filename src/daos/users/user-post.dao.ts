@@ -29,7 +29,7 @@ export class UserDAO_POST {
                 ...rest,
                 'password': hashSync(password, salt),
                 id_rol: 3,
-                status: 1,
+                id_estado: 1,
                 enabled: 1,
                 created_at: getCurrentDate(),
                 updated_at: getCurrentDate()

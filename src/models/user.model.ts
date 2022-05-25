@@ -1,5 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 import { ConnectionDB } from '../config';
+import { FacultadUsuarios } from './faculty_user.model';
+import { MultasUsuarios } from './fines_user.model';
 import { Roles } from './role.model';
 import { Estados } from './status.model';
 
@@ -97,7 +99,6 @@ Usuarios.init(
 )
 
 
-
 Usuarios.belongsTo(Roles, {
     foreignKey: 'id_rol',
     onDelete: 'RESTRICT',
@@ -105,5 +106,13 @@ Usuarios.belongsTo(Roles, {
 
 Usuarios.belongsTo(Estados, {
     foreignKey: 'id_estado',
+    onDelete: 'RESTRICT'
+})
+Usuarios.belongsTo(FacultadUsuarios, {
+    foreignKey: 'documento_usuario',
+    onDelete: 'RESTRICT'
+})
+Usuarios.belongsTo(MultasUsuarios, {
+    foreignKey: 'documento_usuario',
     onDelete: 'RESTRICT'
 })

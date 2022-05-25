@@ -1,7 +1,16 @@
 export { Estados } from "./status.model";
 export { FacultadDependencia } from "./faculty_dependency.model";
+export { FacultadUsuarios } from "./faculty_user.model";
 export { Modulos } from "./module.model";
-export { Permisos } from './permission.model';
+export { Permisos } from "./permission.model";
 export { Roles } from "./role.model";
 export { RolesModulosPermisos } from "./role_module_permission.model";
 export { Usuarios } from "./user.model";
+export { Multas } from "./fines.model";
+export { MultasUsuarios } from "./fines_user.model";
+export { RequerimientoMantenimiento } from "./maintenance_requirement.model";
+export { PartesMovilesAccesorios } from "./mobile_parts_accessories.model";
+export { SoftwareFuncionamiento } from "./software_operation.model";
+export { CaracteristicasTecnicas } from "./technical_characteristics.model";
+export { DocumentacionTecnica } from "./technical_documentation.model";
+export { TipoEquipo } from "./equipment_type.model";

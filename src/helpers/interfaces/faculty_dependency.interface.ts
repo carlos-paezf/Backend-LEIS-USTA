@@ -28,3 +28,7 @@ export interface ParamsFacultyDependencyDAO_PUT {
     facultyDependencyId: number | string
     nombre_facultad_dependencia: string
 }
+
+export interface ParamsFacultyDependencyDAO_DELETE {
+    facultyDependencyId: number | string
+}

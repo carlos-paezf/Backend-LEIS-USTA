@@ -9,5 +9,6 @@ export enum MODULES {
     loan = 5, 
     reports = 6,
     roles = 7,
-    faculty_dependency = 8
+    faculty_dependency = 8,
+    faculty_user = 9
 }

@@ -5,7 +5,6 @@ import { FACULTY_DEPENDENCY_FIELDS } from "../../helpers/mapping";
 import { FacultadDependencia, FacultadUsuarios } from "../../models";
 import { badRequestStatus, internalServerErrorStatus, okStatus } from "../status_responses";
 
-
 export class FacultyDependencyDAO_DELETE{
    /**
      * @param {ParamsFacultyDependencyDAO_DELETE} params
@@ -39,7 +38,7 @@ export class FacultyDependencyDAO_DELETE{
 
             return okStatus({ msg: `La Facultad '${name_facultyDependency}' con el id ${facultyDependencyId}, ha sido eliminado exitosamente` }, res)
         } catch (error) {
-            return internalServerErrorStatus('Error in RolesDAO_DELETE', error, res)
+            return internalServerErrorStatus('Error in FacultyDependencyDAO_DELETE', error, res)
         }
     }
 }

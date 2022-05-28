@@ -21,5 +21,4 @@ class RolesController_DELETE extends RolesDAO_DELETE {
     }
 }
 
-
 export const rolesControllerDelete = new RolesController_DELETE()

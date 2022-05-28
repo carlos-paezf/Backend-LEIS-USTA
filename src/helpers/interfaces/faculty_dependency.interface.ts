@@ -12,14 +12,12 @@ export interface ParamsFacultyDependencyDAO_GETByID {
     facultyDependencyId: number | string
 }
 
-
 /**
  * @author Carlos Páez
  */
 export interface ParamsFacultyDependencyDAO_POST {
     nombre_facultad_dependencia: string
 }
-
 
 /**
  * @author Carlos Páez

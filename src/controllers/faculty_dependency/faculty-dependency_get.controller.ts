@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { FacultyDependencyDAO_GET } from "../../daos/faculty_dependency";
 
-
 /** 
  * It's a class that contains two methods, one that gets all the faculties dependencies and 
  * the other that gets a faculty dependency by its id.
@@ -32,6 +31,5 @@ class FacultyDependencyController_GET extends FacultyDependencyDAO_GET {
         FacultyDependencyDAO_GET.getFacultyDependencyById({facultyDependencyId}, res)
     }
 }
-
 
 export const facultyDependencyControllerGet = new FacultyDependencyController_GET()

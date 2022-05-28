@@ -1,5 +1,5 @@
-import { FacultadDependencia, Modulos, Permisos, Roles, Usuarios } from "../models"
-import { FACULTY_DEPENDENCY_FIELDS, MODULES_FIELDS, PERMISSIONS_FIELDS, ROLES_FIELDS, USERS_FIELDS } from "../helpers/mapping"
+import { FacultadDependencia, FacultadUsuarios, Modulos, Permisos, Roles, Usuarios } from "../models"
+import { FACULTY_DEPENDENCY_FIELDS, FACULTY_USER_FIELDS, MODULES_FIELDS, PERMISSIONS_FIELDS, ROLES_FIELDS, USERS_FIELDS } from "../helpers/mapping"
 import { Permission } from "../helpers/interfaces"
 
 
@@ -121,4 +121,15 @@ export const facultyDependencyNameAlreadyUsed = async (facultyDependencyName: st
         where: { nombre_facultad_dependencia: facultyDependencyName }
     })
     if (facultyDependencyExists) throw new Error(`Ya existe una Facultad-Dependencia con el nombre ${facultyDependencyName}`)
+}
+/**
+ * @param {string} facultyUserName - string
+ * 
+ */
+export const facultyUserNameAlreadyUsed = async (facultyUserName: string) => {
+    const facultyUserExists = await FacultadUsuarios.findOne({
+        attributes: [FACULTY_USER_FIELDS.DOCUMENT],
+        where: { documento_usuario : facultyUserName }
+    })
+    if (facultyUserExists) throw new Error(`Ya existe una Facultad-Usuario con el nombre ${facultyUserName}`)
 }

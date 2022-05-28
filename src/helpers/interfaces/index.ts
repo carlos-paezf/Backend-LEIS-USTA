@@ -25,5 +25,14 @@ export {
     ParamsFacultyDependencyDAO_GETAll,
     ParamsFacultyDependencyDAO_GETByID,
     ParamsFacultyDependencyDAO_POST,
-    ParamsFacultyDependencyDAO_PUT
+    ParamsFacultyDependencyDAO_PUT,
+    ParamsFacultyDependencyDAO_DELETE
 } from './faculty_dependency.interface';
+
+export { 
+    ParamsFacultyUserDAO_GETAll,
+    ParamsFacultyUserDAO_GETByID,
+    ParamsFacultyUserDAO_POST,
+    ParamsFacultyUserDAO_PUT,
+    ParamsFacultyUserDAO_DELETE
+} from './faculty_user.interface';

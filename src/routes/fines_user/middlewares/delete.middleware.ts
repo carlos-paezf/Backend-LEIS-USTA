@@ -2,13 +2,16 @@ import { MODULES, PERMISSIONS } from '../../../helpers/enums';
 import { validateRolFromDB } from '../../../middlewares';
 import { validateJWT } from '../../../middlewares/validate-jwt.middleware';
 
-/**
- * 
- * @author Sergio Gil
- */
-export class FacultyDependencyMiddlewareDELETE {
+
+export class FinesUserMiddlewareDELETE {
+    
+    public static DELETE_DISABLE = [
+        validateJWT,
+        validateRolFromDB(MODULES.fines_user, PERMISSIONS.update)
+    ]
+
     public static DELETE_DESTROY = [
         validateJWT,
-        validateRolFromDB(MODULES.faculty_dependency, PERMISSIONS.update),
+        validateRolFromDB(MODULES.fines_user, PERMISSIONS.update),
     ]
 }

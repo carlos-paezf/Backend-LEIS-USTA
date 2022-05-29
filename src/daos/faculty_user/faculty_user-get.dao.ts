@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { ParamsFacultyUserDAO_GETAll, ParamsFacultyUserDAO_GETByID } from "../../helpers/interfaces/faculty_user.interface";
+import { ParamsFacultyUserDAO_GETAll, ParamsFacultyUserDAO_GETByID } from "../../helpers/interfaces";
 import { FACULTY_USER_FIELDS } from "../../helpers/mapping"
 import { FacultadUsuarios } from "../../models";
 import { badRequestStatus, internalServerErrorStatus, okStatus } from "../status_responses";

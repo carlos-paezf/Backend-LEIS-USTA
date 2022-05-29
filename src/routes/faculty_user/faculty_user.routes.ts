@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { facultyUserControllerGet, facultyUserControllerPost } from "../../controllers/faculty_user";
-import { FacultyUserMiddlewareGET, FacultyUserMiddlewarePOST  } from "./middlewares";
+import { facultyUserControllerGet, facultyUserControllerPost, facultyUserControllerPut, facultyUserControllerDelete} from "../../controllers/faculty_user";
+import { FacultyUserMiddlewareGET, FacultyUserMiddlewarePOST, FacultyUserMiddlewarePUT, FacultyUserMiddlewareDELETE  } from "./middlewares";
 
 class FacultyUserRouter {
     public facultyUserRouter: Router
@@ -33,6 +33,23 @@ class FacultyUserRouter {
             FacultyUserMiddlewarePOST.POST_CREATE,
             facultyUserControllerPost.postFacultyUser
         )
+        this.facultyUserRouter.put(
+            "/update/:facultyUserId",
+            FacultyUserMiddlewarePUT.PUT_UPDATE,
+            facultyUserControllerPut.updateFacultyUserById
+          );
+
+          this.facultyUserRouter.delete(
+            "/disable/:facultyUserId",
+            FacultyUserMiddlewareDELETE.DELETE_DISABLE,
+            facultyUserControllerDelete.disableFacultyUserByDocument
+          );
+          
+          this.facultyUserRouter.delete(
+            "/delete/:facultyUserId",
+            FacultyUserMiddlewareDELETE.DELETE_DESTROY,
+            facultyUserControllerDelete.deleteFacultyUserByID
+          );
     }
 }
 

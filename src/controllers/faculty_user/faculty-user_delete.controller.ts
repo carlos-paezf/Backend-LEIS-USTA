@@ -1,13 +1,16 @@
 import { Request, Response } from "express"
 import { FacultyUserDAO_DELETE } from "../../daos/faculty_user"
 
-
 class FacultyUserController_DELETE extends FacultyUserDAO_DELETE {
     /** 
-     * 
      * @param {Request} req - Request
      * @param {Response} res - Response
      */
+
+     public disableFacultyUserByDocument = (req: Request, res: Response): void => {
+        const { facultyUserId } = req.params
+        FacultyUserDAO_DELETE.deleteFacultyUserByID({ facultyUserId }, res)
+    }
     public deleteFacultyUserByID = (req: Request, res: Response) => {
         const { facultyUserId } = req.params
         FacultyUserDAO_DELETE.deleteFacultyUserByID({ facultyUserId }, res)

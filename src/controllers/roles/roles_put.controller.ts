@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { RolesDAO_PUT } from "../../daos/roles";
 
-
 /**
  * This class is a controller that extends the RolesDAO_PUT class, and it has a method 
  * called updateRoleById that takes in a request and a response, and it calls the updateRolById 
@@ -24,6 +23,5 @@ class RolesController_PUT extends RolesDAO_PUT {
         RolesDAO_PUT.updateRolById({ roleId, ...req.body }, res)
     }
 }
-
 
 export const rolesControllerPut = new RolesController_PUT()

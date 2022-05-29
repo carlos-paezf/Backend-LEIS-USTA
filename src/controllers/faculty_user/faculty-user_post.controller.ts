@@ -10,8 +10,6 @@ import { FacultyUserDAO_POST } from "../../daos/faculty_user";
  */
 class FacultyUserController_POST extends FacultyUserDAO_POST {
     /**
-     * This function takes a request and a response, and then calls the postFacultyDependency function in
-     * the FacultyDependencyDAO_POST file, passing in the request body and the response.
      * @param {Request} req - Request -&gt; this is the request object
      * @param {Response} res - Response
      */

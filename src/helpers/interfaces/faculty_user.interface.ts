@@ -1,5 +1,5 @@
 /**
- * @author Carlos Páez
+ * @author Sergio Gil
  */
  export interface ParamsFacultyUserDAO_GETAll {
     from: number

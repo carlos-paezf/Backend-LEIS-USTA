@@ -1,7 +1,7 @@
 /**
  * @author Sergio Gil
  */
-export enum FACULTY_USER_FIELDS {
-    ID = 'id_facultad_usuario',
+ export enum FINES_USER_FIELDS {
+    ID = 'id_multas_usuarios',
     DOCUMENT = 'documento_usuario'
 }

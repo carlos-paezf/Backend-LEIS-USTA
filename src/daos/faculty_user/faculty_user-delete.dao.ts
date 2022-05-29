@@ -1,10 +1,9 @@
 import { Response } from "express"
 import { getCurrentDate } from "../../helpers"
-import { ParamsFacultyUserDAO_DELETE } from "../../helpers/interfaces/faculty_user.interface";
+import { ParamsFacultyUserDAO_DELETE } from "../../helpers/interfaces";
 import { FACULTY_USER_FIELDS } from "../../helpers/mapping";
 import { FacultadUsuarios, Usuarios } from "../../models";
 import { badRequestStatus, internalServerErrorStatus, okStatus } from "../status_responses";
-
 
 export class FacultyUserDAO_DELETE{
    /**

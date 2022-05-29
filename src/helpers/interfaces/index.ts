@@ -36,3 +36,19 @@ export {
     ParamsFacultyUserDAO_PUT,
     ParamsFacultyUserDAO_DELETE
 } from './faculty_user.interface';
+
+export { 
+    ParamsFinesDAO_GETByID,
+    ParamsFinesDAO_POST,
+    ParamsFinesDAO_PUT,
+    ParamsFinesDAO_GETAll,
+    ParamsFinesDAO_DELETE
+} from './fines.interface';
+
+export { 
+    ParamsFinesUserDAO_GETByID,
+    ParamsFinesUserDAO_POST,
+    ParamsFinesUserDAO_PUT,
+    ParamsFinesUserDAO_GETAll,
+    ParamsFinesUserDAO_DELETE
+} from './fines_user.interface';

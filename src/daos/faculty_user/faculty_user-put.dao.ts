@@ -1,6 +1,6 @@
 import { Response } from "express";
 import { getCurrentDate } from "../../helpers";
-import { ParamsFacultyUserDAO_PUT } from "../../helpers/interfaces/faculty_user.interface";
+import { ParamsFacultyUserDAO_PUT } from "../../helpers/interfaces";
 import { FACULTY_USER_FIELDS } from "../../helpers/mapping";
 import { FacultadUsuarios } from "../../models";
 import { badRequestStatus, internalServerErrorStatus, okStatus } from "../status_responses";
@@ -12,7 +12,7 @@ import { badRequestStatus, internalServerErrorStatus, okStatus } from "../status
  */
 export class FacultyUserDAO_PUT {
     /**
-     * It updates a facultyDependency by id, if it exists and is enabled
+     * It updates a facultyUser by id, if it exists and is enabled
      * 
      * @param {ParamsFacultyUserDAO_PUT} params - ParamsFacultyUserDAO_PUT
      * @param {Response} res - Response

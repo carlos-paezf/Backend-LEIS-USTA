@@ -1,8 +1,6 @@
-import { FacultadDependencia, FacultadUsuarios, Modulos, Permisos, Roles, Usuarios } from "../models"
-import { FACULTY_DEPENDENCY_FIELDS, FACULTY_USER_FIELDS, MODULES_FIELDS, PERMISSIONS_FIELDS, ROLES_FIELDS, USERS_FIELDS } from "../helpers/mapping"
+import { FacultadDependencia, FacultadUsuarios, Modulos, Multas, MultasUsuarios, Permisos, Roles, Usuarios } from "../models"
+import { FINES_FIELDS, FACULTY_DEPENDENCY_FIELDS, FACULTY_USER_FIELDS, MODULES_FIELDS, PERMISSIONS_FIELDS, ROLES_FIELDS, USERS_FIELDS, FINES_USER_FIELDS } from "../helpers/mapping"
 import { Permission } from "../helpers/interfaces"
-
-
 
 /**
  * It checks if a user with the given document already exists in the database. If it does, it throws an
@@ -108,7 +106,6 @@ export const moduleAndPermissionExists = async (modulePermission: Permission[] =
     }
 }
 
-
 /**
  * If a facultyDependency with the given name exists, throw an error
  * @param {string} facultyDependencyName - string
@@ -132,4 +129,28 @@ export const facultyUserNameAlreadyUsed = async (facultyUserName: string) => {
         where: { documento_usuario : facultyUserName }
     })
     if (facultyUserExists) throw new Error(`Ya existe una Facultad-Usuario con el nombre ${facultyUserName}`)
+}
+
+/**
+ * If a facultyDependency with the given name exists, throw an error
+ * @param {string} finesName - string
+ */
+ export const finesNameAlreadyUsed = async (finesName: string) => {
+    const finesExists = await Multas.findOne({
+        attributes: [FINES_FIELDS.NAME],
+        where: { nombre_multa: finesName }
+    })
+    if (finesExists) throw new Error(`Ya existe una Multa con el nombre ${finesName}`)
+}
+
+/**
+ * @param {string} facultyUserName - string
+ * 
+ */
+ export const finesUserNameAlreadyUsed = async (finesUserName: string) => {
+    const finesUserExists = await MultasUsuarios.findOne({
+        attributes: [FINES_USER_FIELDS.DOCUMENT],
+        where: { documento_usuario : finesUserName }
+    })
+    if (finesUserExists) throw new Error(`Ya existe una Multa-Usuario con el nombre ${finesUserName}`)
 }

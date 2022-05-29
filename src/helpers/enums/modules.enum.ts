@@ -10,5 +10,7 @@ export enum MODULES {
     reports = 6,
     roles = 7,
     faculty_dependency = 8,
-    faculty_user = 9
+    faculty_user = 9,
+    fines = 10,
+    fines_user = 11
 }

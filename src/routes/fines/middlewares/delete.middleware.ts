@@ -6,9 +6,13 @@ import { validateJWT } from '../../../middlewares/validate-jwt.middleware';
  * 
  * @author Sergio Gil
  */
-export class FacultyDependencyMiddlewareDELETE {
+export class FinesMiddlewareDELETE {
+    public static DELETE_DISABLE = [
+        validateJWT,
+        validateRolFromDB(MODULES.fines, PERMISSIONS.update)
+    ]
     public static DELETE_DESTROY = [
         validateJWT,
-        validateRolFromDB(MODULES.faculty_dependency, PERMISSIONS.update),
+        validateRolFromDB(MODULES.fines, PERMISSIONS.update),
     ]
 }
